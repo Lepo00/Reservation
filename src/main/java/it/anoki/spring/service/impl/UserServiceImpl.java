@@ -33,14 +33,14 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User update(Long id,String address, String email, String name) throws Exception {
 		if(this.get(id).isPresent()){
-			User c= this.get(id).get();
+			User u= this.get(id).get();
 			if(address != null)
-				c.setAddress(address);
+				u.setAddress(address);
 			if(email != null)
-				c.setEmail(email);
+				u.setEmail(email);
 			if(name != null)
-				c.setName(name);
-			return userRepository.save(c);
+				u.setName(name);
+			return userRepository.save(u);
 		}
 		else
 			return null;

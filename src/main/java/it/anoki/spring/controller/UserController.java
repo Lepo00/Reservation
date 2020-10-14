@@ -36,8 +36,7 @@ public class UserController {
 	@PostMapping("/save")
 	public ResponseEntity<?> newUser(@RequestBody User u) throws Exception {
 		try {
-			User save = userService.save(u);
-			return ResponseEntity.ok(save);
+			return ResponseEntity.ok(userService.save(u));
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body("User Not Saved!");
 		}
@@ -59,7 +58,7 @@ public class UserController {
     public ResponseEntity<String> deleteUser(@PathVariable Long id){
 		try {
 			userService.delete(id);
-			return ResponseEntity.ok().body("deleted");
+			return ResponseEntity.ok().body("User Deleted");
 		} catch (Exception e) {
 			return ResponseEntity.notFound().build();
 		}
