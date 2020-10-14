@@ -34,6 +34,10 @@ public class Room extends AuditModel{
 	@OneToMany
 	@JoinColumn(name = "room_id")
 	private List<Reservation> reservations;
+	
+	@OneToMany
+	@JoinColumn(name = "room_id")
+	private List<Seat> seats;
 
 	public Long getSize() {
 		return size;
