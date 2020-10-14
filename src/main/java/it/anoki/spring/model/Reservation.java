@@ -29,7 +29,7 @@ public class Reservation extends AuditModel{
 	@Column(name = "description")
 	private String description;
 	
-	@Column(name = "used_by")
+	@Column(name = "used_by", updatable=false)
 	private String usedBy;
 
 	public Date getDate() {
