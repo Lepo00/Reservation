@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
@@ -18,8 +20,8 @@ public class Group extends AuditModel{
 	private String description;
 	
 	@ManyToMany
-	//@JoinTable(name="shipment_details", joinColumns = @JoinColumn(name="shipment_id"),
-	//inverseJoinColumns=@JoinColumn(name="pallet_id"))
+	@JoinTable(name="group_user", joinColumns = @JoinColumn(name="group_id"),
+	inverseJoinColumns=@JoinColumn(name="user_id"))
 	private List<User> users;
 	
 	public String getName() {

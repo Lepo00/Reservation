@@ -1,7 +1,11 @@
 package it.anoki.spring.model;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @SuppressWarnings("serial")
@@ -16,6 +20,10 @@ public class User extends AuditModel {
 
 	@Column(name = "address")
 	private String address;
+	
+	@OneToMany
+	@JoinColumn(name = "user_id")
+	private List<Reservation> reservations;
 
 	public String getEmail() {
 		return email;
