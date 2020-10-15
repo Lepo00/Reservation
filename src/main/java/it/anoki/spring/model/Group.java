@@ -36,7 +36,7 @@ public class Group extends AuditModel{
 		return description;
 	}
 
-	public void setDesc(String description) {
+	public void setDescription(String description) {
 		this.description = description;
 	}
 
