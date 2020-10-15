@@ -49,9 +49,9 @@ public class VenueController {
 	public ResponseEntity<?> updateVenue(@PathVariable Long id,
 			@RequestParam (required = false) String address,
 			@RequestParam (required = false) String name,
-			@RequestParam (required = false) Long rooms) {
+			@RequestParam (required = false) Long numberRooms) {
 		try {
-			return ResponseEntity.ok(venueService.update(id, name, address, rooms));
+			return ResponseEntity.ok(venueService.update(id, name, address, numberRooms));
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body("Venue Not Updated!");
 		}
