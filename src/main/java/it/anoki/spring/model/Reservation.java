@@ -4,6 +4,7 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -19,8 +20,8 @@ public class Reservation extends AuditModel{
 	@Temporal(TemporalType.DATE)
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
 	private Date date;
-	
-	@Column(name="createdBy")
+
+	@Column(name="createdBy", updatable=false)
 	private String createdBy;
 	
 	@Column(name="updatedBy")
@@ -31,6 +32,9 @@ public class Reservation extends AuditModel{
 	
 	@Column(name = "used_by", updatable=false)
 	private String usedBy;
+	
+	@ManyToOne
+	Room room;
 
 	public Date getDate() {
 		return date;
@@ -70,6 +74,14 @@ public class Reservation extends AuditModel{
 
 	public void setUsedBy(String usedBy) {
 		this.usedBy = usedBy;
+	}
+	
+	public Room getRoom() {
+		return room;
+	}
+
+	public void setRoom(Room room) {
+		this.room = room;
 	}
 	
 }

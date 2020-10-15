@@ -33,10 +33,6 @@ public class Room extends AuditModel{
 	
 	@OneToMany
 	@JoinColumn(name = "room_id")
-	private List<Reservation> reservations;
-	
-	@OneToMany
-	@JoinColumn(name = "room_id")
 	private List<Seat> seats;
 
 	public Long getSize() {
@@ -85,13 +81,5 @@ public class Room extends AuditModel{
 
 	public void setNumberSeats(Long numberSeats) {
 		this.numberSeats = numberSeats;
-	}
-
-	public List<Reservation> getReservations() {
-		return reservations;
-	}
-
-	public void setReservations(List<Reservation> reservations) {
-		this.reservations = reservations;
 	}
 }
