@@ -14,13 +14,6 @@ import javax.persistence.Table;
 @Table
 public class Venue extends AuditModel{
 	
-	@ManyToOne
-	private Company company;
-	
-	@OneToMany
-	@JoinColumn(name = "venue_id")
-	private List<Room> rooms;
-	
 	@Column
 	private String address;
 	
@@ -29,6 +22,13 @@ public class Venue extends AuditModel{
 	
 	@Column(name="name")
 	private String name;
+	
+	@ManyToOne
+	private Company company;
+	
+	@OneToMany
+	@JoinColumn(name = "venue_id")
+	private List<Room> rooms;
 
 	public Company getCompany() {
 		return company;
