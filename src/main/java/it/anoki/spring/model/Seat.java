@@ -10,19 +10,19 @@ import javax.persistence.Table;
 public class Seat extends AuditModel{
 	
 	@Column(name = "taken")
-	boolean taken;
+	Boolean taken;
 	
 	@Column(name = "equipment")
 	String equipment;
 	
 	@Column(name = "number")
-	int number;
+	Integer number;
 
-	public boolean isTaken() {
+	public Boolean isTaken() {
 		return taken;
 	}
 
-	public void setTaken(boolean taken) {
+	public void setTaken(Boolean taken) {
 		this.taken = taken;
 	}
 
@@ -34,13 +34,12 @@ public class Seat extends AuditModel{
 		this.equipment = equipment;
 	}
 
-	public int getNumber() {
+	public Integer getNumber() {
 		return number;
 	}
 
-	public void setNumber(int number) {
+	public void setNumber(Integer number) {
 		this.number = number;
 	}
-	
 	
 }

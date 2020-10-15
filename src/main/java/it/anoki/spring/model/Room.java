@@ -82,4 +82,14 @@ public class Room extends AuditModel{
 	public void setNumberSeats(Long numberSeats) {
 		this.numberSeats = numberSeats;
 	}
+
+	public List<Seat> getSeats() {
+		return seats;
+	}
+
+	public void setSeats(List<Seat> seats) {
+		this.seats = seats;
+	}
+	
+	
 }
