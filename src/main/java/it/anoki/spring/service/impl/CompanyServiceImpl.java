@@ -25,15 +25,12 @@ public class CompanyServiceImpl implements CompanyService {
 	}
 
 	@Override
-	public Company save(String name, String description, Long idUser) throws Exception {
+	public Company save(Company c, Long idUser) throws Exception {
 		Optional<User> u=userRepository.findById(idUser);
-		Company c=null;
-		if(u.isPresent() && description!=null && name!=null) {
-			c=new Company();
-			c.setDescription(description);
-			c.setName(name);
+		if(u.isPresent())
 			c.setUser(u.get());
-		}
+		else
+			c=null;
 		return companyRepository.save(c);
 	}
 

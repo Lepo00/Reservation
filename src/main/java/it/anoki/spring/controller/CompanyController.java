@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,16 +33,15 @@ public class CompanyController {
 		}
 	}
 	
-	@PostMapping("/save")
+	@PostMapping("/save/{idUser}")
 	public ResponseEntity<?> newCompany(
-			@RequestParam String name,
-			@RequestParam String description,
-			@RequestParam Long idUser
+			@PathVariable Long idUser,
+			@RequestBody Company c
 			) throws Exception {
 		/*System.out.println("idUser:\t"+idUser);
 		System.out.println("company:"+name+", "+description);*/
 		try {
-			return ResponseEntity.ok(companyService.save(name,description,idUser));
+			return ResponseEntity.ok(companyService.save(c,idUser));
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body("Company Not Saved!");
 		}
