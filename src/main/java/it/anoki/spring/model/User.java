@@ -21,6 +21,9 @@ public class User extends AuditModel {
 	@Column(name = "address")
 	private String address;
 	
+	@Column(name = "password")
+	private String password;
+	
 	@OneToMany
 	@JoinColumn(name = "user_id")
 	private List<Reservation> reservations;
