@@ -7,12 +7,15 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "user")
 public class User extends AuditModel {
-	@Column(name = "name")
+	
+	@Column(name = "name",unique = true)
+	@NotNull
 	private String name;
 
 	@Column(name = "email")
@@ -22,6 +25,7 @@ public class User extends AuditModel {
 	private String address;
 	
 	@Column(name = "password")
+	@NotNull
 	private String password;
 	
 	@OneToMany
