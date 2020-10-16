@@ -18,11 +18,11 @@ import it.anoki.spring.service.ReservationService;
 public class ReservationServiceImpl implements ReservationService {
 
 	@Autowired
-	ReservationRepository reservationRepository;
+	private ReservationRepository reservationRepository;
 	@Autowired
-	UserRepository userRepository;
+	private UserRepository userRepository;
 	@Autowired
-	RoomRepository roomRepository;
+	private RoomRepository roomRepository;
 
 	@Override
 	public Optional<Reservation> get(Long id) throws Exception {

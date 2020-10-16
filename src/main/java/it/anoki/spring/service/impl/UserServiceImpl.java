@@ -13,7 +13,7 @@ import it.anoki.spring.service.UserService;
 public class UserServiceImpl implements UserService {
 
 	@Autowired
-	UserRepository userRepository;
+	private UserRepository userRepository;
 
 	@Override
 	public Optional<User> get(Long id) throws Exception {

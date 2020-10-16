@@ -15,9 +15,9 @@ import it.anoki.spring.service.SeatService;
 public class SeatServiceImpl implements SeatService {
 
 	@Autowired
-	SeatRepository seatRepository;
+	private SeatRepository seatRepository;
 	@Autowired
-	RoomRepository roomRepository;
+	private RoomRepository roomRepository;
 
 	
 	@Override

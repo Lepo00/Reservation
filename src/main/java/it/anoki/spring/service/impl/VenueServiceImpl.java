@@ -15,9 +15,9 @@ import it.anoki.spring.service.VenueService;
 public class VenueServiceImpl implements VenueService {
 
 	@Autowired
-	VenueRepository venueRepository;
+	private VenueRepository venueRepository;
 	@Autowired
-	CompanyRepository companyRepository;
+	private CompanyRepository companyRepository;
 
 	@Override
 	public Optional<Venue> get(Long id) throws Exception {

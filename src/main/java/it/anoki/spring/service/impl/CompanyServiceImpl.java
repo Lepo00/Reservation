@@ -15,9 +15,9 @@ import it.anoki.spring.service.CompanyService;
 public class CompanyServiceImpl implements CompanyService {
 
 	@Autowired
-	CompanyRepository companyRepository;
+	private CompanyRepository companyRepository;
 	@Autowired
-	UserRepository userRepository;
+	private UserRepository userRepository;
 
 	@Override
 	public Optional<Company> get(Long id) throws Exception {

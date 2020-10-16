@@ -15,9 +15,9 @@ import it.anoki.spring.service.RoomService;
 public class RoomServiceImpl implements RoomService {
 
 	@Autowired
-	RoomRepository roomRepository;
+	private RoomRepository roomRepository;
 	@Autowired
-	VenueRepository venueRepository;
+	private VenueRepository venueRepository;
 
 	@Override
 	public Optional<Room> get(Long id) throws Exception {

@@ -15,9 +15,9 @@ import it.anoki.spring.service.GroupService;
 public class GroupServiceImpl implements GroupService {
 
 	@Autowired
-	GroupRepository groupRepository;
+	private GroupRepository groupRepository;
 	@Autowired
-	UserRepository userRepository;
+	private UserRepository userRepository;
 
 	
 	@Override
