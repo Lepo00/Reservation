@@ -10,6 +10,7 @@ import it.anoki.spring.model.Group;
 import it.anoki.spring.model.Reservation;
 import it.anoki.spring.model.Room;
 import it.anoki.spring.model.User;
+import it.anoki.spring.repository.CompanyRepository;
 import it.anoki.spring.repository.GroupRepository;
 import it.anoki.spring.repository.ReservationRepository;
 import it.anoki.spring.repository.RoomRepository;
@@ -106,7 +107,17 @@ public class ReservationServiceImpl implements ReservationService {
 	}
 
 	@Override
-	public boolean saveByCompany(Reservation r, Long idUser, Long idRoom) throws Exception {
+	public boolean saveByCompany(Reservation reservation, Long idCompany, Long idRoom) throws Exception {
+		Optional<Room> room=roomRepository.findById(idRoom);
+		if(room.isPresent()) {
+			reservation.setCreatedBy(jwtTokenUtil.getUsernameFromToken());
+			reservation.setUpdatedBy(jwtTokenUtil.getUsernameFromToken());
+			reservation.setUsedBy("company-"+idCompany);
+			reservation.setOccupiedSeats(room.get().getNumberSeats());
+			reservation.setRoom(room.get());
+			reservationRepository.save(reservation);
+			return true;
+		}
 		return false;
 	}
 	

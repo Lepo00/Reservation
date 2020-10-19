@@ -42,7 +42,7 @@ public class RoomServiceImpl implements RoomService {
 
 	@Override
 	public Room update(Long id, Long size, Long distanceMin, Long emergencyExits, Long noUsableLocations, String name,
-			Long numberSeats) throws Exception {
+			Integer numberSeats) throws Exception {
 		Optional<Room> room = this.get(id);
 		Room r = null;
 		if (room.isPresent()) {

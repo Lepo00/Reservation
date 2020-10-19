@@ -3,6 +3,7 @@ package it.anoki.spring.service;
 import java.util.Optional;
 
 import it.anoki.spring.model.Company;
+import it.anoki.spring.model.Reservation;
 public interface CompanyService {
 
 	public Optional<Company> get(Long id) throws Exception;
@@ -12,5 +13,8 @@ public interface CompanyService {
 	public void delete(Long id) throws Exception;
 	
 	public Company update(Long id, String name, String description) throws Exception;
+	
+	public boolean reserve(Long idCompany, Long idRoom, Reservation reservation) throws Exception;
+
 
 }

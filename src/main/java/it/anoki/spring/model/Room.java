@@ -29,7 +29,7 @@ public class Room extends AuditModel{
 	private String name;
 	
 	@Column(name = "number_seats")
-	private Long numberSeats;
+	private Integer numberSeats;
 	
 	@OneToMany
 	@JoinColumn(name = "room_id")
@@ -75,11 +75,11 @@ public class Room extends AuditModel{
 		this.name = name;
 	}
 
-	public Long getNumberSeats() {
+	public Integer getNumberSeats() {
 		return numberSeats;
 	}
 
-	public void setNumberSeats(Long numberSeats) {
+	public void setNumberSeats(Integer numberSeats) {
 		this.numberSeats = numberSeats;
 	}
 

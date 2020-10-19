@@ -58,7 +58,7 @@ public class RoomController {
 			@RequestParam (required = false) Long emergencyExits,
 			@RequestParam (required = false) Long noUsableLocations,
 			@RequestParam (required = false) String name,
-			@RequestParam (required = false) Long numberSeats) {
+			@RequestParam (required = false) Integer numberSeats) {
 		try {
 			return ResponseEntity.ok(roomService.update(id, size, distanceMin, emergencyExits, noUsableLocations, name, numberSeats));
 		} catch (Exception e) {

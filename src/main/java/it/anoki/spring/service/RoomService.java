@@ -11,6 +11,6 @@ public interface RoomService {
 	
 	public void delete(Long id) throws Exception;
 	
-	public Room update(Long id, Long size, Long distanceMin, Long emergencyExits,Long noUsableLocations,String name,Long numberSeats) throws Exception;
+	public Room update(Long id, Long size, Long distanceMin, Long emergencyExits,Long noUsableLocations,String name,Integer numberSeats) throws Exception;
 
 }

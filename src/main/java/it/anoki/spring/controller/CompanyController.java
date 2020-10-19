@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
 import it.anoki.spring.model.Company;
+import it.anoki.spring.model.Reservation;
 import it.anoki.spring.service.CompanyService;
 @RestController
 @RequestMapping("/company")
@@ -42,8 +43,6 @@ public class CompanyController {
 			@PathVariable Long idUser,
 			@RequestBody Company c
 			) throws Exception {
-		/*System.out.println("idUser:\t"+idUser);
-		System.out.println("company:"+name+", "+description);*/
 		try {
 			return ResponseEntity.ok(companyService.save(c,idUser));
 		} catch (Exception e) {
@@ -74,4 +73,15 @@ public class CompanyController {
 		}
 	}
 	
+	@ApiOperation(value = "", authorizations = { @Authorization(value = "jwtToken") })
+	@PostMapping(path = "/{idCompany}/reserve/{idRoom}")
+	public ResponseEntity<?> reserve(@PathVariable Long idCompany, @PathVariable Long idRoom,
+			@RequestBody Reservation reservation) {
+		try {
+			boolean save = this.companyService.reserve(idCompany, idRoom, reservation);
+			return save ? ResponseEntity.ok().body(reservation) : ResponseEntity.badRequest().body("Reservation Not Made!");
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body("Reservation Not Made!");
+		}
+	}
 }

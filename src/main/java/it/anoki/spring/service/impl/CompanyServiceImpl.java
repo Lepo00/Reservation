@@ -6,14 +6,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import it.anoki.spring.model.Company;
+import it.anoki.spring.model.Reservation;
 import it.anoki.spring.model.User;
 import it.anoki.spring.repository.CompanyRepository;
 import it.anoki.spring.repository.UserRepository;
 import it.anoki.spring.service.CompanyService;
+import it.anoki.spring.service.ReservationService;
 
 @Service
 public class CompanyServiceImpl implements CompanyService {
-
+	
+	@Autowired
+	private ReservationService reservationService;
 	@Autowired
 	private CompanyRepository companyRepository;
 	@Autowired
@@ -51,6 +55,13 @@ public class CompanyServiceImpl implements CompanyService {
 				c.setName(name);
 		}
 		return companyRepository.save(c);
+	}
+
+	@Override
+	public boolean reserve(Long idCompany, Long idRoom, Reservation reservation) throws Exception {
+		if(!companyRepository.existsById(idCompany))
+			return false;
+		return reservationService.saveByCompany(reservation, idCompany, idRoom);
 	}
 
 	
