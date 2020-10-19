@@ -32,21 +32,10 @@ public class CustomUserDetailService implements UserDetailsService, Authenticati
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
-        Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-        String roles = 
-        		"ROLE_USER;" +
-        		"ROLE_EDIT;" + 
-        		"ROLE_DELETE;";
-        String[] tokens = roles.split(";");
-        for(String role : tokens) {
-        	grantedAuthorities.add(new SimpleGrantedAuthority(role));
-        }
-        return new org.springframework.security.core.userdetails.User("user1", bCryptPasswordEncoder.encode("123"), grantedAuthorities);   
-	}
-	
-	public boolean login(String username, String password) {
-		return false;
+		User user = userRepository.findByName(username);
+		List<GrantedAuthority> grantedAuths = new ArrayList<>();
+	    grantedAuths.add(new SimpleGrantedAuthority("ROLE_USER"));
+        return new org.springframework.security.core.userdetails.User(user.getName(), bCryptPasswordEncoder.encode(user.getPassword()),grantedAuths);   
 	}
 
 	@Override
@@ -61,9 +50,7 @@ public class CustomUserDetailService implements UserDetailsService, Authenticati
 	    if (!(password.equals(user.getPassword()))) {
 	        throw new BadCredentialsException("1000");
 	    }
-	    List<GrantedAuthority> grantedAuths = new ArrayList<>();
-        grantedAuths.add(new SimpleGrantedAuthority("ROLE_USER"));
-        return new UsernamePasswordAuthenticationToken(username, password, grantedAuths);
+        return authentication;
 	}
 		
 }

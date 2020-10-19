@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,10 +32,9 @@ public class JwtAuthenticationController {
 	@PostMapping("/token")
 	public ResponseEntity<String> createAuthenticationToken(@RequestBody JwtAuthenticationReq authenticationRequest) throws Exception {
 		try {
-		authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
+		Authentication user= authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 		
-		final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
-		final String token = jwtTokenUtil.generateToken(userDetails);
+		final String token = jwtTokenUtil.generateToken(user.getPrincipal()+"");
 		
 		return ResponseEntity.ok(token);
 		}catch(BadCredentialsException e) {
@@ -42,7 +42,7 @@ public class JwtAuthenticationController {
 		}
 	}
 
-	private void authenticate(String username, String password) throws Exception {
-		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+	private Authentication authenticate(String username, String password) throws Exception {
+		return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
 	}
 }

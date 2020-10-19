@@ -37,10 +37,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 		String username = null;
 		String jwtToken = null;
 		
-// JWT Token is in the form "Bearer token". Remove Bearer word and get
-// only the Token
+		// JWT Token is in the form "Bearer token". Remove Bearer word and get
+		// only the Token
 		if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
-			
 			jwtToken = requestTokenHeader.substring("Bearer ".length());
 			try {
 				username = jwtTokenUtil.getUsernameFromToken(jwtToken);
@@ -49,16 +48,16 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 			} catch (ExpiredJwtException e) {
 				throw new ServletException("JWT Token has expired", e);
 			}
-		} else {
+		} else if(requestTokenHeader != null && !requestTokenHeader.startsWith("Bearer ")) {
 			logger.warn("JWT Token does not begin with Bearer String");
 		}
 
-// Once we get the token validate it.
+		// Once we get the token validate it.
 		if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 			
 			UserDetails userDetails = this.jwtUserDetailsService.loadUserByUsername(username);
 			
-// if token is valid configure Spring Security to manually set authentication
+			// if token is valid configure Spring Security to manually set authentication
 			if (jwtTokenUtil.validateToken(jwtToken, userDetails)) {
 				
 				UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
@@ -67,9 +66,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 				usernamePasswordAuthenticationToken
 						.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 				
-// After setting the Authentication in the context, we specify
-// that the current user is authenticated. So it passes the
-// Spring Security Configurations successfully.
+			// After setting the Authentication in the context, we specify
+			// that the current user is authenticated. So it passes the
+			// Spring Security Configurations successfully.
 				SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
 			}
 		}
