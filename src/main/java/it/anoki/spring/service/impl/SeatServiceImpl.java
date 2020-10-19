@@ -44,8 +44,9 @@ public class SeatServiceImpl implements SeatService {
 	@Override
 	public Seat update(Long id, Boolean taken,String equipment, Integer number) throws Exception {
 		Seat seat=null;
-		if(this.get(id).isPresent() && number!=null || equipment!=null || taken!=null){
-			seat= this.get(id).get();
+		Optional<Seat> s=this.get(id);
+		if(s.isPresent() && number!=null || equipment!=null || taken!=null){
+			seat= s.get();
 			if(equipment != null)
 				seat.setEquipment(equipment);
 			if(number != null)

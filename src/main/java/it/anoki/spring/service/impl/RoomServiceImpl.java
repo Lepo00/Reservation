@@ -23,7 +23,7 @@ public class RoomServiceImpl implements RoomService {
 	public Optional<Room> get(Long id) throws Exception {
 		return roomRepository.findById(id);
 	}
-	
+
 	@Override
 	public void delete(Long id) throws Exception {
 		roomRepository.deleteById(id);
@@ -31,38 +31,36 @@ public class RoomServiceImpl implements RoomService {
 
 	@Override
 	public boolean save(Room room, Long idVenue) throws Exception {
-		Optional<Venue> ven=venueRepository.findById(idVenue);
-		if(ven.isPresent() && ven.get().getRooms().size()<ven.get().getNumberRooms()) {
+		Optional<Venue> ven = venueRepository.findById(idVenue);
+		if (ven.isPresent() && ven.get().getRooms().size() < ven.get().getNumberRooms()) {
 			ven.get().getRooms().add(room);
 			roomRepository.save(room);
 			return true;
-		}
-		else
+		} else
 			return false;
 	}
 
 	@Override
 	public Room update(Long id, Long size, Long distanceMin, Long emergencyExits, Long noUsableLocations, String name,
 			Long numberSeats) throws Exception {
-		if(this.get(id).isPresent()){
-			Room r= this.get(id).get();
-			if(size != null)
+		Optional<Room> room = this.get(id);
+		Room r = null;
+		if (room.isPresent()) {
+			r = room.get();
+			if (size != null)
 				r.setSize(size);
-			if(distanceMin != null)
+			if (distanceMin != null)
 				r.setDistanceMin(distanceMin);
-			if(emergencyExits != null)
+			if (emergencyExits != null)
 				r.setEmergencyExits(emergencyExits);
-			if(noUsableLocations != null)
+			if (noUsableLocations != null)
 				r.setNoUsableLocations(noUsableLocations);
-			if(name != null)
+			if (name != null)
 				r.setName(name);
-			if(numberSeats != null)
+			if (numberSeats != null)
 				r.setNumberSeats(numberSeats);
-			return roomRepository.save(r);
 		}
-		else
-			return null;
+		return roomRepository.save(r);
 	}
 
-	
 }

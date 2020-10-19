@@ -50,8 +50,9 @@ public class ReservationServiceImpl implements ReservationService {
 	@Override
 	public Reservation update(Long id, Date date,String description) throws Exception {
 		Reservation res=null;
-		if(this.get(id).isPresent() && date!=null || description!=null){
-			res= this.get(id).get();
+		Optional<Reservation> r= this.get(id);
+		if(r.isPresent() && date!=null || description!=null){
+			res= r.get();
 			if(description != null)
 				res.setDescription(description);
 			if(date != null)

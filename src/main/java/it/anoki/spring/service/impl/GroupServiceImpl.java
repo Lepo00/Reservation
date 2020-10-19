@@ -19,7 +19,6 @@ public class GroupServiceImpl implements GroupService {
 	@Autowired
 	private UserRepository userRepository;
 
-	
 	@Override
 	public Optional<Group> get(Long id) throws Exception {
 		return groupRepository.findById(id);
@@ -36,13 +35,14 @@ public class GroupServiceImpl implements GroupService {
 	}
 
 	@Override
-	public Group update(Long id, String name,String desc) throws Exception {
-		Group g=null;
-		if(this.get(id).isPresent() && name!=null || desc!=null){
-			g= this.get(id).get();
-			if(desc != null)
+	public Group update(Long id, String name, String desc) throws Exception {
+		Optional<Group> group = this.get(id);
+		Group g = null;
+		if (group.isPresent() && name != null || desc != null) {
+			g = group.get();
+			if (desc != null)
 				g.setDescription(desc);
-			if(name != null)
+			if (name != null)
 				g.setName(name);
 		}
 		return groupRepository.save(g);
@@ -50,14 +50,14 @@ public class GroupServiceImpl implements GroupService {
 
 	@Override
 	public boolean addUser(Long idGroup, Long idUser) throws Exception {
-		Optional<User> user= userRepository.findById(idUser);
-		Optional<Group> group= groupRepository.findById(idGroup);
-		if(group.isPresent() && user.isPresent()) {
+		Optional<User> user = userRepository.findById(idUser);
+		Optional<Group> group = groupRepository.findById(idGroup);
+		if (group.isPresent() && user.isPresent()) {
 			group.get().getUsers().add(user.get());
 			this.save(group.get());
 			return true;
 		}
 		return false;
 	}
-	
+
 }

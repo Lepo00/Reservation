@@ -41,16 +41,16 @@ public class CompanyServiceImpl implements CompanyService {
 
 	@Override
 	public Company update(Long id, String name,String desc) throws Exception {
-		if(this.get(id).isPresent()){
-			Company c= this.get(id).get();
+		Optional<Company>company=this.get(id);
+		Company c=null;
+		if(company.isPresent() && desc!=null || name!=null){
+			c= company.get();
 			if(desc != null)
 				c.setDescription(desc);
 			if(name != null)
 				c.setName(name);
-			return companyRepository.save(c);
 		}
-		else
-			return null;
+		return companyRepository.save(c);
 	}
 
 	

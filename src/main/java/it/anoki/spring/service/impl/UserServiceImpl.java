@@ -31,20 +31,19 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User update(Long id,String address, String email, String name) throws Exception {
-		if(this.get(id).isPresent()){
-			User u= this.get(id).get();
-			if(address != null)
-				u.setAddress(address);
-			if(email != null)
-				u.setEmail(email);
-			if(name != null)
-				u.setName(name);
-			return userRepository.save(u);
+	public User update(Long id, String address, String email, String name) throws Exception {
+		Optional<User> u = this.get(id);
+		User user = null;
+		if (this.get(id).isPresent()) {
+			user = u.get();
+			if (address != null)
+				user.setAddress(address);
+			if (email != null)
+				user.setEmail(email);
+			if (name != null)
+				user.setName(name);
 		}
-		else
-			return null;
+		return userRepository.save(user);
 	}
 
-	
 }

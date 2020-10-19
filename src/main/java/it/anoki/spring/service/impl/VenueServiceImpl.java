@@ -26,11 +26,11 @@ public class VenueServiceImpl implements VenueService {
 
 	@Override
 	public Venue save(Venue v, Long idCompany) throws Exception {
-		Optional<Company> comp=companyRepository.findById(idCompany);
-		if(comp.isPresent())
+		Optional<Company> comp = companyRepository.findById(idCompany);
+		if (comp.isPresent())
 			v.setCompany(comp.get());
 		else
-			v=null;
+			v = null;
 		return venueRepository.save(v);
 	}
 
@@ -40,20 +40,19 @@ public class VenueServiceImpl implements VenueService {
 	}
 
 	@Override
-	public Venue update(Long id, String name,String address, Long numberRooms) throws Exception {
-		if(this.get(id).isPresent()){
-			Venue c= this.get(id).get();
-			if(address != null)
-				c.setAddress(address);
-			if(name != null)
-				c.setName(name);
-			if(numberRooms != null)
-				c.setNumberRooms(numberRooms);
-			return venueRepository.save(c);
+	public Venue update(Long id, String name, String address, Long numberRooms) throws Exception {
+		Optional<Venue> venue = this.get(id);
+		Venue v = null;
+		if (venue.isPresent()) {
+			v = venue.get();
+			if (address != null)
+				v.setAddress(address);
+			if (name != null)
+				v.setName(name);
+			if (numberRooms != null)
+				v.setNumberRooms(numberRooms);
 		}
-		else
-			return null;
+		return venueRepository.save(v);
 	}
 
-	
 }
