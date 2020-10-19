@@ -17,15 +17,17 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
 import it.anoki.spring.model.Group;
+import it.anoki.spring.model.Reservation;
 import it.anoki.spring.service.GroupService;
+
 @RestController
 @RequestMapping("/group")
 public class GroupController {
-	
+
 	@Autowired
 	GroupService groupService;
-	
-	@ApiOperation(value = "", authorizations = { @Authorization(value="jwtToken") })
+
+	@ApiOperation(value = "", authorizations = { @Authorization(value = "jwtToken") })
 	@GetMapping("/detail/{id}")
 	public ResponseEntity<Group> get(@PathVariable Long id) throws Exception {
 		Optional<Group> g = groupService.get(id);
@@ -35,8 +37,8 @@ public class GroupController {
 			return ResponseEntity.notFound().build();
 		}
 	}
-	
-	@ApiOperation(value = "", authorizations = { @Authorization(value="jwtToken") })
+
+	@ApiOperation(value = "", authorizations = { @Authorization(value = "jwtToken") })
 	@PostMapping("/save")
 	public ResponseEntity<?> newGroup(@RequestBody Group g) throws Exception {
 		try {
@@ -45,22 +47,21 @@ public class GroupController {
 			return ResponseEntity.badRequest().body("Group Not Saved!");
 		}
 	}
-	
-	@ApiOperation(value = "", authorizations = { @Authorization(value="jwtToken") })
+
+	@ApiOperation(value = "", authorizations = { @Authorization(value = "jwtToken") })
 	@PutMapping(path = "/update/{id}")
-	public ResponseEntity<?> updateGroup(@PathVariable Long id,
-			@RequestParam (required = false) String desc,
-			@RequestParam (required = false) String name) {
+	public ResponseEntity<?> updateGroup(@PathVariable Long id, @RequestParam(required = false) String desc,
+			@RequestParam(required = false) String name) {
 		try {
-			return ResponseEntity.ok(groupService.update(id,name,desc));
+			return ResponseEntity.ok(groupService.update(id, name, desc));
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body("Group Not Updated!");
 		}
 	}
-	
-	@ApiOperation(value = "", authorizations = { @Authorization(value="jwtToken") })
-	@DeleteMapping(path="delete/{id}")
-    public ResponseEntity<String> deleteGroup(@PathVariable Long id){
+
+	@ApiOperation(value = "", authorizations = { @Authorization(value = "jwtToken") })
+	@DeleteMapping(path = "delete/{id}")
+	public ResponseEntity<String> deleteGroup(@PathVariable Long id) {
 		try {
 			groupService.delete(id);
 			return ResponseEntity.ok().body("Group Deleted");
@@ -68,18 +69,27 @@ public class GroupController {
 			return ResponseEntity.notFound().build();
 		}
 	}
-	
-	@ApiOperation(value = "", authorizations = { @Authorization(value="jwtToken") })
-	@PostMapping(path = "/{id}/user")
-	public ResponseEntity<?> addUser(
-			@PathVariable Long id,
-			@RequestParam Long idUser
-			) throws Exception{
+
+	@ApiOperation(value = "", authorizations = { @Authorization(value = "jwtToken") })
+	@PostMapping(path = "/{idGroup}/user")
+	public ResponseEntity<?> addUser(@PathVariable Long idGroup, @RequestParam Long idUser) throws Exception {
 		try {
-			boolean save = groupService.addUser(id,idUser);
-			return(save ? ResponseEntity.ok("Added") : ResponseEntity.badRequest().body("Pallet Not Added!"));
+			boolean save = groupService.addUser(idGroup, idUser);
+			return (save ? ResponseEntity.ok("User Added") : ResponseEntity.badRequest().body("User Not Added!"));
 		} catch (Exception e) {
-			return ResponseEntity.badRequest().body("Pallet Not Added!");
+			return ResponseEntity.badRequest().body("User Not Added!");
+		}
+	}
+
+	@ApiOperation(value = "", authorizations = { @Authorization(value = "jwtToken") })
+	@PostMapping(path = "/{idGroup}/reserve/{idRoom}")
+	public ResponseEntity<?> reserve(@PathVariable Long idGroup, @PathVariable Long idRoom,
+			@RequestBody Reservation reservation) {
+		try {
+			boolean save = this.groupService.reserve(idGroup, idRoom, reservation);
+			return save ? ResponseEntity.ok().body(reservation) : ResponseEntity.badRequest().body("Reservation Not Made!");
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body("Reservation Not Made!");
 		}
 	}
 }

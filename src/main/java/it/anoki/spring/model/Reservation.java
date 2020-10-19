@@ -33,6 +33,9 @@ public class Reservation extends AuditModel{
 	@Column(name = "used_by", updatable=false)
 	private String usedBy;
 	
+	@Column(name = "occupied_seats", updatable=false)
+	private Integer occupiedSeats;
+	
 	@ManyToOne
 	Room room;
 
@@ -82,6 +85,14 @@ public class Reservation extends AuditModel{
 
 	public void setRoom(Room room) {
 		this.room = room;
+	}
+
+	public Integer getOccupiedSeats() {
+		return occupiedSeats;
+	}
+
+	public void setOccupiedSeats(Integer occupiedSeats) {
+		this.occupiedSeats = occupiedSeats;
 	}
 	
 }

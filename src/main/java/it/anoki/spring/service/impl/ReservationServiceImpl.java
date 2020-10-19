@@ -6,9 +6,11 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import it.anoki.spring.model.Group;
 import it.anoki.spring.model.Reservation;
 import it.anoki.spring.model.Room;
 import it.anoki.spring.model.User;
+import it.anoki.spring.repository.GroupRepository;
 import it.anoki.spring.repository.ReservationRepository;
 import it.anoki.spring.repository.RoomRepository;
 import it.anoki.spring.repository.UserRepository;
@@ -22,6 +24,8 @@ public class ReservationServiceImpl implements ReservationService {
 	private ReservationRepository reservationRepository;
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	private GroupRepository groupRepository;
 	@Autowired
 	private RoomRepository roomRepository;
 	@Autowired
@@ -69,30 +73,40 @@ public class ReservationServiceImpl implements ReservationService {
 	}
 
 	@Override
-	public boolean saveByUser(Reservation r, Long idUser, Long idRoom) throws Exception {
-		Optional<User> user=userRepository.findById(idUser);
+	public boolean saveByUser(Reservation reservation, Long idUser, Long idRoom) throws Exception {
+		User user=userRepository.getOne(idUser);
 		Optional<Room> room=roomRepository.findById(idRoom);
-		if(user.isPresent() && room.isPresent()) {
-			r.setCreatedBy(jwtTokenUtil.getUsernameFromToken());
-			r.setUsedBy("user-"+jwtTokenUtil.getUsernameFromToken());
-			r.setUpdatedBy(jwtTokenUtil.getUsernameFromToken());
-			r.setRoom(room.get());
-			user.get().getReservations().add(r);
-			reservationRepository.save(r);
+		if(room.isPresent()) {
+			reservation.setCreatedBy(jwtTokenUtil.getUsernameFromToken());
+			reservation.setUsedBy("user-"+jwtTokenUtil.getUsernameFromToken());
+			reservation.setUpdatedBy(jwtTokenUtil.getUsernameFromToken());
+			reservation.setOccupiedSeats(1);
+			reservation.setRoom(room.get());
+			user.getReservations().add(reservation);
+			reservationRepository.save(reservation);
 			return true;
 		}
 		return false;
 	}
 
 	@Override
-	public boolean saveByGroup(Reservation r, Long idUser, Long idRoom) throws Exception {
-		// TODO Auto-generated method stub
+	public boolean saveByGroup(Reservation reservation, Long idGroup, Long idRoom) throws Exception {
+		Group group=groupRepository.getOne(idGroup);
+		Optional<Room> room=roomRepository.findById(idRoom);
+		if(room.isPresent()) {
+			reservation.setCreatedBy(jwtTokenUtil.getUsernameFromToken());
+			reservation.setUpdatedBy(jwtTokenUtil.getUsernameFromToken());
+			reservation.setUsedBy("group-"+idGroup);
+			reservation.setOccupiedSeats(group.getUsers().size());
+			reservation.setRoom(room.get());
+			reservationRepository.save(reservation);
+			return true;
+		}
 		return false;
 	}
 
 	@Override
 	public boolean saveByCompany(Reservation r, Long idUser, Long idRoom) throws Exception {
-		// TODO Auto-generated method stub
 		return false;
 	}
 	

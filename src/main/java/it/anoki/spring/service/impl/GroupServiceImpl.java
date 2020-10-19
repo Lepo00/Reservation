@@ -6,10 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import it.anoki.spring.model.Group;
+import it.anoki.spring.model.Reservation;
 import it.anoki.spring.model.User;
 import it.anoki.spring.repository.GroupRepository;
 import it.anoki.spring.repository.UserRepository;
 import it.anoki.spring.service.GroupService;
+import it.anoki.spring.service.ReservationService;
 
 @Service
 public class GroupServiceImpl implements GroupService {
@@ -18,6 +20,8 @@ public class GroupServiceImpl implements GroupService {
 	private GroupRepository groupRepository;
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	private ReservationService reservationService;
 
 	@Override
 	public Optional<Group> get(Long id) throws Exception {
@@ -60,4 +64,12 @@ public class GroupServiceImpl implements GroupService {
 		return false;
 	}
 
+	@Override
+	public boolean reserve(Long idGroup, Long idRoom, Reservation reservation) throws Exception {
+//		Optional<Group> group = groupRepository.findById(idGroup);
+		if(!groupRepository.existsById(idGroup))
+			return false;
+		return reservationService.saveByGroup(reservation, idGroup, idRoom);
+	}
+	
 }

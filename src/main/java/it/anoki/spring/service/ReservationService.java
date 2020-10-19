@@ -14,10 +14,10 @@ public interface ReservationService {
 	
 	public Reservation update(Long id, Date date, String description) throws Exception;
 	
-	public boolean saveByUser(Reservation r, Long idUser, Long idRoom) throws Exception;
+	public boolean saveByUser(Reservation reservation, Long idUser, Long idRoom) throws Exception;
 	
-	public boolean saveByGroup(Reservation r, Long idUser, Long idRoom) throws Exception;
+	public boolean saveByGroup(Reservation reservation, Long idGroup, Long idRoom) throws Exception;
 	
-	public boolean saveByCompany(Reservation r, Long idUser, Long idRoom) throws Exception;
+	public boolean saveByCompany(Reservation reservation, Long idCompany, Long idRoom) throws Exception;
 
 }
