@@ -13,5 +13,11 @@ public interface ReservationService {
 	public void delete(Long id) throws Exception;
 	
 	public Reservation update(Long id, Date date, String description) throws Exception;
+	
+	public boolean saveByUser(Reservation r, Long idUser, Long idRoom) throws Exception;
+	
+	public boolean saveByGroup(Reservation r, Long idUser, Long idRoom) throws Exception;
+	
+	public boolean saveByCompany(Reservation r, Long idUser, Long idRoom) throws Exception;
 
 }

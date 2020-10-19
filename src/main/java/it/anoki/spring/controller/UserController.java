@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
+import it.anoki.spring.model.Reservation;
 import it.anoki.spring.model.User;
 import it.anoki.spring.service.UserService;
+
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -70,4 +72,14 @@ public class UserController {
 		}
 	}
 	
+	@ApiOperation(value = "", authorizations = { @Authorization(value="jwtToken") })
+	@PostMapping(path="/reserve/{idRoom}")
+	public ResponseEntity<?> reserve(@PathVariable Long idRoom, @RequestBody Reservation reservation){
+		try {
+			boolean save=this.userService.reserve(idRoom, reservation);
+			return save ? ResponseEntity.ok().body(reservation) : ResponseEntity.badRequest().body("Reservation Not Made!");
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body("Reservation Not Made!");
+		}
+	}
 }

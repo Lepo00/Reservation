@@ -5,15 +5,22 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import it.anoki.spring.model.Reservation;
 import it.anoki.spring.model.User;
 import it.anoki.spring.repository.UserRepository;
+import it.anoki.spring.service.ReservationService;
 import it.anoki.spring.service.UserService;
+import it.anoki.spring.util.JwtTokenUtil;
 
 @Service
 public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	private JwtTokenUtil jwtTokenUtil;
+	@Autowired
+	private ReservationService reservationService;
 
 	@Override
 	public Optional<User> get(Long id) throws Exception {
@@ -44,6 +51,12 @@ public class UserServiceImpl implements UserService {
 				user.setName(name);
 		}
 		return userRepository.save(user);
+	}
+
+	@Override
+	public boolean reserve(Long idRoom, Reservation reservation) throws Exception {
+		User user=userRepository.findByName(jwtTokenUtil.getUsernameFromToken());
+		return reservationService.saveByUser(reservation, user.getId(), idRoom);
 	}
 
 }

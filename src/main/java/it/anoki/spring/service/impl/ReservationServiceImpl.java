@@ -42,9 +42,10 @@ public class ReservationServiceImpl implements ReservationService {
 		Optional<User> user=userRepository.findById(idUser);
 		Optional<Room> room=roomRepository.findById(idRoom);
 		if(user.isPresent() && room.isPresent()) {
-			reservation.setRoom(room.get());
 			reservation.setCreatedBy(jwtTokenUtil.getUsernameFromToken());
+			reservation.setUsedBy(jwtTokenUtil.getUsernameFromToken());
 			reservation.setUpdatedBy(jwtTokenUtil.getUsernameFromToken());
+			reservation.setRoom(room.get());
 			user.get().getReservations().add(reservation);
 			reservationRepository.save(reservation);
 			return true;
@@ -58,12 +59,41 @@ public class ReservationServiceImpl implements ReservationService {
 		Optional<Reservation> r= this.get(id);
 		if(r.isPresent() && date!=null || description!=null){
 			res= r.get();
+			res.setUpdatedBy(jwtTokenUtil.getUsernameFromToken());
 			if(description != null)
 				res.setDescription(description);
 			if(date != null)
 				res.setDate(date);
 		}
 		return reservationRepository.save(res);
+	}
+
+	@Override
+	public boolean saveByUser(Reservation r, Long idUser, Long idRoom) throws Exception {
+		Optional<User> user=userRepository.findById(idUser);
+		Optional<Room> room=roomRepository.findById(idRoom);
+		if(user.isPresent() && room.isPresent()) {
+			r.setCreatedBy(jwtTokenUtil.getUsernameFromToken());
+			r.setUsedBy("user-"+jwtTokenUtil.getUsernameFromToken());
+			r.setUpdatedBy(jwtTokenUtil.getUsernameFromToken());
+			r.setRoom(room.get());
+			user.get().getReservations().add(r);
+			reservationRepository.save(r);
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean saveByGroup(Reservation r, Long idUser, Long idRoom) throws Exception {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean saveByCompany(Reservation r, Long idUser, Long idRoom) throws Exception {
+		// TODO Auto-generated method stub
+		return false;
 	}
 	
 }
