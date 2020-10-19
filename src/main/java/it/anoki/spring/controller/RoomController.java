@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.Authorization;
 import it.anoki.spring.model.Room;
 import it.anoki.spring.service.RoomService;
 @RestController
@@ -23,6 +25,7 @@ public class RoomController {
 	@Autowired
 	RoomService roomService;
 	
+	@ApiOperation(value = "", authorizations = { @Authorization(value="jwtToken") })
 	@GetMapping("/detail/{id}")
 	public ResponseEntity<Room> get(@PathVariable Long id) throws Exception {
 		Optional<Room> c = roomService.get(id);
@@ -33,6 +36,7 @@ public class RoomController {
 		}
 	}
 	
+	@ApiOperation(value = "", authorizations = { @Authorization(value="jwtToken") })
 	@PostMapping("/save/{idVenue}")
 	public ResponseEntity<?> newRoom(
 			@PathVariable Long idVenue,
@@ -46,6 +50,7 @@ public class RoomController {
 		}
 	}
 	
+	@ApiOperation(value = "", authorizations = { @Authorization(value="jwtToken") })
 	@PutMapping(path = "/update/{id}")
 	public ResponseEntity<?> updateRoom(@PathVariable Long id,
 			@RequestParam (required = false) Long size,
@@ -61,6 +66,7 @@ public class RoomController {
 		}
 	}
 	
+	@ApiOperation(value = "", authorizations = { @Authorization(value="jwtToken") })
 	@DeleteMapping(path="delete/{id}")
     public ResponseEntity<String> deleteRoom(@PathVariable Long id){
 		try {

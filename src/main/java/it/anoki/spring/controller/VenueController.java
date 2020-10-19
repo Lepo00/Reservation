@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.Authorization;
 import it.anoki.spring.model.Venue;
 import it.anoki.spring.service.VenueService;
 @RestController
@@ -23,6 +25,7 @@ public class VenueController {
 	@Autowired
 	VenueService venueService;
 	
+	@ApiOperation(value = "", authorizations = { @Authorization(value="jwtToken") })
 	@GetMapping("/detail/{id}")
 	public ResponseEntity<Venue> get(@PathVariable Long id) throws Exception {
 		Optional<Venue> c = venueService.get(id);
@@ -33,6 +36,7 @@ public class VenueController {
 		}
 	}
 	
+	@ApiOperation(value = "", authorizations = { @Authorization(value="jwtToken") })
 	@PostMapping("/save/{idCompany}")
 	public ResponseEntity<?> newVenue(
 			@PathVariable Long idCompany,
@@ -45,6 +49,7 @@ public class VenueController {
 		}
 	}
 	
+	@ApiOperation(value = "", authorizations = { @Authorization(value="jwtToken") })
 	@PutMapping(path = "/update/{id}")
 	public ResponseEntity<?> updateVenue(@PathVariable Long id,
 			@RequestParam (required = false) String address,
@@ -57,6 +62,7 @@ public class VenueController {
 		}
 	}
 	
+	@ApiOperation(value = "", authorizations = { @Authorization(value="jwtToken") })
 	@DeleteMapping(path="delete/{id}")
     public ResponseEntity<String> deleteVenue(@PathVariable Long id){
 		try {

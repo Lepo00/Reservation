@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.Authorization;
 import it.anoki.spring.model.Group;
 import it.anoki.spring.service.GroupService;
 @RestController
@@ -23,6 +25,7 @@ public class GroupController {
 	@Autowired
 	GroupService groupService;
 	
+	@ApiOperation(value = "", authorizations = { @Authorization(value="jwtToken") })
 	@GetMapping("/detail/{id}")
 	public ResponseEntity<Group> get(@PathVariable Long id) throws Exception {
 		Optional<Group> g = groupService.get(id);
@@ -33,6 +36,7 @@ public class GroupController {
 		}
 	}
 	
+	@ApiOperation(value = "", authorizations = { @Authorization(value="jwtToken") })
 	@PostMapping("/save")
 	public ResponseEntity<?> newGroup(@RequestBody Group g) throws Exception {
 		try {
@@ -42,6 +46,7 @@ public class GroupController {
 		}
 	}
 	
+	@ApiOperation(value = "", authorizations = { @Authorization(value="jwtToken") })
 	@PutMapping(path = "/update/{id}")
 	public ResponseEntity<?> updateGroup(@PathVariable Long id,
 			@RequestParam (required = false) String desc,
@@ -53,6 +58,7 @@ public class GroupController {
 		}
 	}
 	
+	@ApiOperation(value = "", authorizations = { @Authorization(value="jwtToken") })
 	@DeleteMapping(path="delete/{id}")
     public ResponseEntity<String> deleteGroup(@PathVariable Long id){
 		try {
@@ -63,6 +69,7 @@ public class GroupController {
 		}
 	}
 	
+	@ApiOperation(value = "", authorizations = { @Authorization(value="jwtToken") })
 	@PostMapping(path = "/{id}/user")
 	public ResponseEntity<?> addUser(
 			@PathVariable Long id,

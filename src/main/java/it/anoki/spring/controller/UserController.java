@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.Authorization;
 import it.anoki.spring.model.User;
 import it.anoki.spring.service.UserService;
 @RestController
@@ -23,6 +25,7 @@ public class UserController {
 	@Autowired
 	UserService userService;
 	
+	@ApiOperation(value = "", authorizations = { @Authorization(value="jwtToken") })
 	@GetMapping("/detail/{id}")
 	public ResponseEntity<User> get(@PathVariable Long id) throws Exception {
 		Optional<User> c = userService.get(id);
@@ -33,6 +36,7 @@ public class UserController {
 		}
 	}
 	
+	@ApiOperation(value = "", authorizations = { @Authorization(value="jwtToken") })
 	@PostMapping("/save")
 	public ResponseEntity<?> newUser(@RequestBody User u) throws Exception {
 		try {
@@ -42,6 +46,7 @@ public class UserController {
 		}
 	}
 	
+	@ApiOperation(value = "", authorizations = { @Authorization(value="jwtToken") })
 	@PutMapping(path = "/update/{id}")
 	public ResponseEntity<?> updateUser(@PathVariable Long id,
 			@RequestParam (required = false) String email,
@@ -54,6 +59,7 @@ public class UserController {
 		}
 	}
 	
+	@ApiOperation(value = "", authorizations = { @Authorization(value="jwtToken") })
 	@DeleteMapping(path="delete/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable Long id){
 		try {

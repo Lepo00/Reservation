@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.Authorization;
 import it.anoki.spring.model.Seat;
 import it.anoki.spring.service.SeatService;
 @RestController
@@ -23,6 +25,7 @@ public class SeatController {
 	@Autowired
 	SeatService seatService;
 	
+	@ApiOperation(value = "", authorizations = { @Authorization(value="jwtToken") })
 	@GetMapping("/detail/{id}")
 	public ResponseEntity<Seat> get(@PathVariable Long id) throws Exception {
 		Optional<Seat> g = seatService.get(id);
@@ -33,6 +36,7 @@ public class SeatController {
 		}
 	}
 	
+	@ApiOperation(value = "", authorizations = { @Authorization(value="jwtToken") })
 	@PostMapping("/save/{idRoom}")
 	public ResponseEntity<?> newSeat(
 			@PathVariable Long idRoom,
@@ -46,6 +50,7 @@ public class SeatController {
 		}
 	}
 	
+	@ApiOperation(value = "", authorizations = { @Authorization(value="jwtToken") })
 	@PutMapping(path = "/update/{id}")
 	public ResponseEntity<?> updateSeat(@PathVariable Long id,
 			@RequestParam (required = false) String equipment,
@@ -58,6 +63,7 @@ public class SeatController {
 		}
 	}
 	
+	@ApiOperation(value = "", authorizations = { @Authorization(value="jwtToken") })
 	@DeleteMapping(path="delete/{id}")
     public ResponseEntity<String> deleteSeat(@PathVariable Long id){
 		try {
