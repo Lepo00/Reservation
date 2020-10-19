@@ -6,9 +6,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -36,9 +40,22 @@ public class JwtTokenUtil implements Serializable {
 		return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
 	}
 	
-//retrieve username from jwt token
+	//retrieve username from jwt token
 	public String getUsernameFromToken(String token) {
 		return getClaimFromToken(token, Claims::getSubject);
+	}
+	
+	public String getUsernameFromToken(HttpServletRequest  request) {
+		final String requestTokenHeader = request.getHeader("Authorization");
+		String jwtToken = requestTokenHeader.substring("Bearer ".length());
+		return getClaimFromToken(jwtToken, Claims::getSubject);
+	}
+	
+	public String getUsernameFromToken() {
+		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
+		final String requestTokenHeader = request.getHeader("Authorization");
+		String jwtToken = requestTokenHeader.substring("Bearer ".length());
+		return getClaimFromToken(jwtToken, Claims::getSubject);
 	}
 
 //retrieve expiration date from jwt token

@@ -46,7 +46,7 @@ public class ReservationController {
 			@RequestBody Reservation r
 			) throws Exception {
 		try {
-			boolean save= reservationService.save(r,idUser,idRoom,"ciao");
+			boolean save= reservationService.save(r,idUser,idRoom);
 			return save ? ResponseEntity.ok(r) : ResponseEntity.badRequest().body("Reservation Not Saved!");
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body("Reservation Not Saved!");

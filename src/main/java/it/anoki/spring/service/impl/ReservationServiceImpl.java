@@ -13,6 +13,7 @@ import it.anoki.spring.repository.ReservationRepository;
 import it.anoki.spring.repository.RoomRepository;
 import it.anoki.spring.repository.UserRepository;
 import it.anoki.spring.service.ReservationService;
+import it.anoki.spring.util.JwtTokenUtil;
 
 @Service
 public class ReservationServiceImpl implements ReservationService {
@@ -23,6 +24,8 @@ public class ReservationServiceImpl implements ReservationService {
 	private UserRepository userRepository;
 	@Autowired
 	private RoomRepository roomRepository;
+	@Autowired
+	private JwtTokenUtil jwtTokenUtil;
 
 	@Override
 	public Optional<Reservation> get(Long id) throws Exception {
@@ -35,11 +38,13 @@ public class ReservationServiceImpl implements ReservationService {
 	}
 
 	@Override
-	public boolean save(Reservation reservation, Long idUser, Long idRoom, String usedBy) throws Exception {
+	public boolean save(Reservation reservation, Long idUser, Long idRoom) throws Exception {
 		Optional<User> user=userRepository.findById(idUser);
 		Optional<Room> room=roomRepository.findById(idRoom);
 		if(user.isPresent() && room.isPresent()) {
 			reservation.setRoom(room.get());
+			reservation.setCreatedBy(jwtTokenUtil.getUsernameFromToken());
+			reservation.setUpdatedBy(jwtTokenUtil.getUsernameFromToken());
 			user.get().getReservations().add(reservation);
 			reservationRepository.save(reservation);
 			return true;
