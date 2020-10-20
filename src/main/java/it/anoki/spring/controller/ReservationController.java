@@ -18,14 +18,15 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
 import it.anoki.spring.model.Reservation;
 import it.anoki.spring.service.ReservationService;
+
 @RestController
 @RequestMapping("/reservation")
 public class ReservationController {
-	
+
 	@Autowired
 	ReservationService reservationService;
-	
-	@ApiOperation(value = "", authorizations = { @Authorization(value="jwtToken") })
+
+	@ApiOperation(value = "", authorizations = { @Authorization(value = "jwtToken") })
 	@GetMapping("/detail/{id}")
 	public ResponseEntity<Reservation> get(@PathVariable Long id) throws Exception {
 		Optional<Reservation> c = reservationService.get(id);
@@ -35,7 +36,7 @@ public class ReservationController {
 			return ResponseEntity.notFound().build();
 		}
 	}
-	
+
 //	@ApiOperation(value = "", authorizations = { @Authorization(value="jwtToken") })
 //	@PostMapping("/save/{idUser}/{idRoom}")
 //	public ResponseEntity<?> newReservation(
@@ -50,24 +51,22 @@ public class ReservationController {
 //			return ResponseEntity.badRequest().body("Reservation Not Saved!");
 //		}
 //	}
-	
-	@ApiOperation(value = "", authorizations = { @Authorization(value="jwtToken") })
+
+	@ApiOperation(value = "", authorizations = { @Authorization(value = "jwtToken") })
 	@PutMapping(path = "/update/{id}")
-	public ResponseEntity<?> updateReservation(
-			@PathVariable Long id,
-			@RequestParam (required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") Date date,
-			@RequestParam (required = false) String description) {
+	public ResponseEntity<?> updateReservation(@PathVariable Long id,
+			@RequestParam(required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") Date date,
+			@RequestParam(required = false) String description) {
 		try {
-			System.out.println("data: "+date);
 			return ResponseEntity.ok(reservationService.update(id, date, description));
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body("Reservation Not Updated!");
 		}
 	}
-	
-	@ApiOperation(value = "", authorizations = { @Authorization(value="jwtToken") })
-	@DeleteMapping(path="delete/{id}")
-    public ResponseEntity<String> deleteReservation(@PathVariable Long id){
+
+	@ApiOperation(value = "", authorizations = { @Authorization(value = "jwtToken") })
+	@DeleteMapping(path = "delete/{id}")
+	public ResponseEntity<String> deleteReservation(@PathVariable Long id) {
 		try {
 			reservationService.delete(id);
 			return ResponseEntity.ok().body("Reservation Deleted");
@@ -75,5 +74,5 @@ public class ReservationController {
 			return ResponseEntity.notFound().build();
 		}
 	}
-	
+
 }

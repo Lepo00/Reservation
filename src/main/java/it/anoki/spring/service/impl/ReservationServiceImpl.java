@@ -75,13 +75,13 @@ public class ReservationServiceImpl implements ReservationService {
 		Optional<Reservation> r = this.get(id);
 		if (r.isPresent() && date != null || description != null) {
 			res = r.get();
-			res.setUpdatedBy(jwtTokenUtil.getUsernameFromToken());
 			if (description != null)
 				res.setDescription(description);
 			if (date != null)
 				res.setDate(date);
-			if (!this.checkUsedBy(res.getUsedBy()))
+			if (!this.checkUsedBy(res.getUsedBy())) {
 				res = null;
+			}
 		}
 		return reservationRepository.save(res);
 	}
@@ -141,9 +141,9 @@ public class ReservationServiceImpl implements ReservationService {
 	public boolean checkUsedBy(String usedBy) throws Exception {
 		User user = userRepository.findByName(jwtTokenUtil.getUsernameFromToken());
 		String[] split = usedBy.split("-");
-		return (usedBy.startsWith("group") && !groupService.isInGroup(split[1], user)
-				|| usedBy.startsWith("company") && !companyService.isAdmin(split[1], user)
-				|| user.equals(userRepository.getOne(Long.parseLong(split[1]))));
+		return (usedBy.startsWith("group") && groupService.isInGroup(split[1], user)
+				|| usedBy.startsWith("company") && companyService.isAdmin(split[1], user)
+				|| user.equals(userRepository.findByName(split[1])));
 	}
 
 }
