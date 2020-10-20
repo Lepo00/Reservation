@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import it.anoki.spring.model.Company;
 import it.anoki.spring.model.Reservation;
+import it.anoki.spring.model.User;
 public interface CompanyService {
 
 	public Optional<Company> get(Long id) throws Exception;
@@ -16,5 +17,8 @@ public interface CompanyService {
 	
 	public boolean reserve(Long idCompany, Long idRoom, Reservation reservation) throws Exception;
 
-
+	public boolean isAdmin(Long idCompany, User u);
+	
+	public boolean isAdmin(String idCompany, User u);
+	
 }

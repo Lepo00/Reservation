@@ -8,7 +8,7 @@ public interface ReservationService {
 
 	public Optional<Reservation> get(Long id) throws Exception;
 
-	public boolean save(Reservation r, Long idUser, Long idRoom) throws Exception;
+//	public boolean save(Reservation r, Long idUser, Long idRoom) throws Exception;
 	
 	public void delete(Long id) throws Exception;
 	
@@ -19,5 +19,7 @@ public interface ReservationService {
 	public boolean saveByGroup(Reservation reservation, Long idGroup, Long idRoom) throws Exception;
 	
 	public boolean saveByCompany(Reservation reservation, Long idCompany, Long idRoom) throws Exception;
+	
+	public boolean checkUsedBy(String usedBy) throws Exception;
 
 }

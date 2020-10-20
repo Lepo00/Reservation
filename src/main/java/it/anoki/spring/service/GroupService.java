@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import it.anoki.spring.model.Group;
 import it.anoki.spring.model.Reservation;
+import it.anoki.spring.model.User;
 
 public interface GroupService {
 
@@ -18,5 +19,9 @@ public interface GroupService {
 	public boolean addUser(Long idGroup, Long idUser) throws Exception;
 
 	public boolean reserve(Long idGroup, Long idRoom, Reservation reservation) throws Exception;
+	
+	public boolean isInGroup(Long idGroup, User user) throws Exception;
+	
+	public boolean isInGroup(String idGroup, User user) throws Exception;
 
 }

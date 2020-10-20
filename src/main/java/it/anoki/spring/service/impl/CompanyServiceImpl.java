@@ -64,5 +64,16 @@ public class CompanyServiceImpl implements CompanyService {
 		return reservationService.saveByCompany(reservation, idCompany, idRoom);
 	}
 
+	@Override
+	public boolean isAdmin(Long idCompany, User u) {
+		return (companyRepository.existsById(idCompany) && companyRepository.getOne(idCompany).getUser().equals(u));
+	}
+
+	@Override
+	public boolean isAdmin(String idCompany, User u) {
+		Long id= Long.parseLong(idCompany);
+		return(companyRepository.existsById(id) && companyRepository.getOne(id).getUser().equals(u));
+	}
+
 	
 }
