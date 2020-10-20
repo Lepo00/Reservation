@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import it.anoki.spring.model.Room;
+import it.anoki.spring.model.Seat;
 import it.anoki.spring.model.Venue;
 import it.anoki.spring.repository.RoomRepository;
+import it.anoki.spring.repository.SeatRepository;
 import it.anoki.spring.repository.VenueRepository;
 import it.anoki.spring.service.RoomService;
 
@@ -16,6 +18,8 @@ public class RoomServiceImpl implements RoomService {
 
 	@Autowired
 	private RoomRepository roomRepository;
+	@Autowired
+	private SeatRepository seatRepository;
 	@Autowired
 	private VenueRepository venueRepository;
 
@@ -62,5 +66,38 @@ public class RoomServiceImpl implements RoomService {
 		}
 		return roomRepository.save(r);
 	}
+
+	@Override
+	public boolean occupySeats(Long idRoom, Integer numberSeats) {
+		Room room=roomRepository.getOne(idRoom);
+		if(numberSeats>this.freeSeats(idRoom))
+			return false;
+		for(int i=0;i<numberSeats;i++) {
+			Seat s=this.instanceSeat(room.getSeats().size()+1);
+			room.getSeats().add(s);
+			seatRepository.save(s);
+		}
+		return true;
+	}
+
+	@Override
+	public Integer freeSeats(Long idRoom) {
+		int cont=0;
+		Room room=roomRepository.getOne(idRoom);
+		for(Seat s: room.getSeats())
+			if(s.isTaken())
+				cont++;
+		return  room.getNumberSeats()-cont;
+	}
+	
+	public Seat instanceSeat(int i) {
+		Seat s=new Seat();
+		s.setTaken(true);
+		s.setEquipment("default");
+		s.setNumber(i);
+		return s;
+	}
+	
+	
 
 }

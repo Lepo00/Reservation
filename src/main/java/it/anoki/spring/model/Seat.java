@@ -2,8 +2,6 @@ package it.anoki.spring.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Table;
 
 @SuppressWarnings("serial")
@@ -18,7 +16,6 @@ public class Seat extends AuditModel{
 	String equipment;
 	
 	@Column(name = "number")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	Integer number;
 
 	public Boolean isTaken() {

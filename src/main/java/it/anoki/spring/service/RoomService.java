@@ -13,4 +13,7 @@ public interface RoomService {
 	
 	public Room update(Long id, Long size, Long distanceMin, Long emergencyExits,Long noUsableLocations,String name,Integer numberSeats) throws Exception;
 
+	public boolean occupySeats(Long idRoom, Integer numberSeats);
+	
+	public Integer freeSeats(Long idRoom);
 }

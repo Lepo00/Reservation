@@ -10,12 +10,12 @@ import it.anoki.spring.model.Group;
 import it.anoki.spring.model.Reservation;
 import it.anoki.spring.model.Room;
 import it.anoki.spring.model.User;
-import it.anoki.spring.repository.CompanyRepository;
 import it.anoki.spring.repository.GroupRepository;
 import it.anoki.spring.repository.ReservationRepository;
 import it.anoki.spring.repository.RoomRepository;
 import it.anoki.spring.repository.UserRepository;
 import it.anoki.spring.service.ReservationService;
+import it.anoki.spring.service.RoomService;
 import it.anoki.spring.util.JwtTokenUtil;
 
 @Service
@@ -31,6 +31,8 @@ public class ReservationServiceImpl implements ReservationService {
 	private RoomRepository roomRepository;
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil;
+	@Autowired
+	private RoomService roomService;
 
 	@Override
 	public Optional<Reservation> get(Long id) throws Exception {
@@ -77,7 +79,7 @@ public class ReservationServiceImpl implements ReservationService {
 	public boolean saveByUser(Reservation reservation, Long idUser, Long idRoom) throws Exception {
 		User user=userRepository.getOne(idUser);
 		Optional<Room> room=roomRepository.findById(idRoom);
-		if(room.isPresent()) {
+		if(room.isPresent() && roomService.occupySeats(idRoom, 1)) {
 			reservation.setCreatedBy(jwtTokenUtil.getUsernameFromToken());
 			reservation.setUsedBy("user-"+jwtTokenUtil.getUsernameFromToken());
 			reservation.setUpdatedBy(jwtTokenUtil.getUsernameFromToken());
@@ -94,7 +96,7 @@ public class ReservationServiceImpl implements ReservationService {
 	public boolean saveByGroup(Reservation reservation, Long idGroup, Long idRoom) throws Exception {
 		Group group=groupRepository.getOne(idGroup);
 		Optional<Room> room=roomRepository.findById(idRoom);
-		if(room.isPresent()) {
+		if(room.isPresent()  && roomService.occupySeats(idRoom, group.getUsers().size())) {
 			reservation.setCreatedBy(jwtTokenUtil.getUsernameFromToken());
 			reservation.setUpdatedBy(jwtTokenUtil.getUsernameFromToken());
 			reservation.setUsedBy("group-"+idGroup);
@@ -109,7 +111,7 @@ public class ReservationServiceImpl implements ReservationService {
 	@Override
 	public boolean saveByCompany(Reservation reservation, Long idCompany, Long idRoom) throws Exception {
 		Optional<Room> room=roomRepository.findById(idRoom);
-		if(room.isPresent()) {
+		if(room.isPresent() && roomService.occupySeats(idRoom, room.get().getNumberSeats())) {
 			reservation.setCreatedBy(jwtTokenUtil.getUsernameFromToken());
 			reservation.setUpdatedBy(jwtTokenUtil.getUsernameFromToken());
 			reservation.setUsedBy("company-"+idCompany);

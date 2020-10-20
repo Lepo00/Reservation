@@ -66,7 +66,6 @@ public class GroupServiceImpl implements GroupService {
 
 	@Override
 	public boolean reserve(Long idGroup, Long idRoom, Reservation reservation) throws Exception {
-//		Optional<Group> group = groupRepository.findById(idGroup);
 		if(!groupRepository.existsById(idGroup))
 			return false;
 		return reservationService.saveByGroup(reservation, idGroup, idRoom);
