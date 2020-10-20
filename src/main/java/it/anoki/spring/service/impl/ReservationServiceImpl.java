@@ -47,7 +47,7 @@ public class ReservationServiceImpl implements ReservationService {
 
 	@Override
 	public void delete(Long id) throws Exception {
-		if(reservationRepository.existsById(id) && this.checkUsedBy(reservationRepository.getOne(id).getUsedBy()))
+		if (reservationRepository.existsById(id) && this.checkUsedBy(reservationRepository.getOne(id).getUsedBy()))
 			reservationRepository.deleteById(id);
 		else
 			throw new Exception();

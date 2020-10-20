@@ -14,8 +14,8 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "user")
 public class User extends AuditModel {
-	
-	@Column(name = "name",unique = true)
+
+	@Column(name = "name", unique = true)
 	@NotNull
 	private String name;
 
@@ -24,11 +24,11 @@ public class User extends AuditModel {
 
 	@Column(name = "address")
 	private String address;
-	
+
 	@Column(name = "password")
 	@NotNull
 	private String password;
-	
+
 	@OneToMany
 	@JoinColumn(name = "user_id")
 	private List<Reservation> reservations;
@@ -72,7 +72,5 @@ public class User extends AuditModel {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
-	
-	
+
 }

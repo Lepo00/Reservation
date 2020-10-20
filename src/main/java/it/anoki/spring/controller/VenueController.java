@@ -18,14 +18,15 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
 import it.anoki.spring.model.Venue;
 import it.anoki.spring.service.VenueService;
+
 @RestController
 @RequestMapping("/venue")
 public class VenueController {
-	
+
 	@Autowired
 	VenueService venueService;
-	
-	@ApiOperation(value = "", authorizations = { @Authorization(value="jwtToken") })
+
+	@ApiOperation(value = "", authorizations = { @Authorization(value = "jwtToken") })
 	@GetMapping("/detail/{id}")
 	public ResponseEntity<Venue> get(@PathVariable Long id) throws Exception {
 		Optional<Venue> c = venueService.get(id);
@@ -35,36 +36,31 @@ public class VenueController {
 			return ResponseEntity.notFound().build();
 		}
 	}
-	
-	@ApiOperation(value = "", authorizations = { @Authorization(value="jwtToken") })
+
+	@ApiOperation(value = "", authorizations = { @Authorization(value = "jwtToken") })
 	@PostMapping("/save/{idCompany}")
-	public ResponseEntity<?> newVenue(
-			@PathVariable Long idCompany,
-			@RequestBody Venue v
-			) throws Exception {
+	public ResponseEntity<?> newVenue(@PathVariable Long idCompany, @RequestBody Venue v) throws Exception {
 		try {
-			return ResponseEntity.ok(venueService.save(v,idCompany));
+			return ResponseEntity.ok(venueService.save(v, idCompany));
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body("Venue Not Saved!");
 		}
 	}
-	
-	@ApiOperation(value = "", authorizations = { @Authorization(value="jwtToken") })
+
+	@ApiOperation(value = "", authorizations = { @Authorization(value = "jwtToken") })
 	@PutMapping(path = "/update/{id}")
-	public ResponseEntity<?> updateVenue(@PathVariable Long id,
-			@RequestParam (required = false) String address,
-			@RequestParam (required = false) String name,
-			@RequestParam (required = false) Long numberRooms) {
+	public ResponseEntity<?> updateVenue(@PathVariable Long id, @RequestParam(required = false) String address,
+			@RequestParam(required = false) String name, @RequestParam(required = false) Long numberRooms) {
 		try {
 			return ResponseEntity.ok(venueService.update(id, name, address, numberRooms));
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body("Venue Not Updated!");
 		}
 	}
-	
-	@ApiOperation(value = "", authorizations = { @Authorization(value="jwtToken") })
-	@DeleteMapping(path="delete/{id}")
-    public ResponseEntity<String> deleteVenue(@PathVariable Long id){
+
+	@ApiOperation(value = "", authorizations = { @Authorization(value = "jwtToken") })
+	@DeleteMapping(path = "delete/{id}")
+	public ResponseEntity<String> deleteVenue(@PathVariable Long id) {
 		try {
 			venueService.delete(id);
 			return ResponseEntity.ok().body("Venue Deleted");
@@ -72,5 +68,5 @@ public class VenueController {
 			return ResponseEntity.notFound().build();
 		}
 	}
-	
+
 }

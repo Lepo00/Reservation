@@ -15,7 +15,7 @@ import it.anoki.spring.service.ReservationService;
 
 @Service
 public class CompanyServiceImpl implements CompanyService {
-	
+
 	@Autowired
 	private ReservationService reservationService;
 	@Autowired
@@ -30,11 +30,11 @@ public class CompanyServiceImpl implements CompanyService {
 
 	@Override
 	public Company save(Company c, Long idUser) throws Exception {
-		Optional<User> u=userRepository.findById(idUser);
-		if(u.isPresent())
+		Optional<User> u = userRepository.findById(idUser);
+		if (u.isPresent())
 			c.setUser(u.get());
 		else
-			c=null;
+			c = null;
 		return companyRepository.save(c);
 	}
 
@@ -44,14 +44,14 @@ public class CompanyServiceImpl implements CompanyService {
 	}
 
 	@Override
-	public Company update(Long id, String name,String desc) throws Exception {
-		Optional<Company>company=this.get(id);
-		Company c=null;
-		if(company.isPresent() && desc!=null || name!=null){
-			c= company.get();
-			if(desc != null)
+	public Company update(Long id, String name, String desc) throws Exception {
+		Optional<Company> company = this.get(id);
+		Company c = null;
+		if (company.isPresent() && desc != null || name != null) {
+			c = company.get();
+			if (desc != null)
 				c.setDescription(desc);
-			if(name != null)
+			if (name != null)
 				c.setName(name);
 		}
 		return companyRepository.save(c);
@@ -59,7 +59,7 @@ public class CompanyServiceImpl implements CompanyService {
 
 	@Override
 	public boolean reserve(Long idCompany, Long idRoom, Reservation reservation) throws Exception {
-		if(!companyRepository.existsById(idCompany))
+		if (!companyRepository.existsById(idCompany))
 			return false;
 		return reservationService.saveByCompany(reservation, idCompany, idRoom);
 	}
@@ -71,9 +71,8 @@ public class CompanyServiceImpl implements CompanyService {
 
 	@Override
 	public boolean isAdmin(String idCompany, User u) {
-		Long id= Long.parseLong(idCompany);
-		return(companyRepository.existsById(id) && companyRepository.getOne(id).getUser().equals(u));
+		Long id = Long.parseLong(idCompany);
+		return (companyRepository.existsById(id) && companyRepository.getOne(id).getUser().equals(u));
 	}
 
-	
 }

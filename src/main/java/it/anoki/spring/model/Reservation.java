@@ -14,28 +14,28 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "reservation")
-public class Reservation extends AuditModel{
-	
-	@Column(name="date")
+public class Reservation extends AuditModel {
+
+	@Column(name = "date")
 	@Temporal(TemporalType.DATE)
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
 	private Date date;
 
-	@Column(name="createdBy", updatable=false)
+	@Column(name = "createdBy", updatable = false)
 	private String createdBy;
-	
-	@Column(name="updatedBy")
+
+	@Column(name = "updatedBy")
 	private String updatedBy;
-	
+
 	@Column(name = "description")
 	private String description;
-	
-	@Column(name = "used_by", updatable=false)
+
+	@Column(name = "used_by", updatable = false)
 	private String usedBy;
-	
-	@Column(name = "occupied_seats", updatable=false)
+
+	@Column(name = "occupied_seats", updatable = false)
 	private Integer occupiedSeats;
-	
+
 	@ManyToOne
 	Room room;
 
@@ -78,7 +78,7 @@ public class Reservation extends AuditModel{
 	public void setUsedBy(String usedBy) {
 		this.usedBy = usedBy;
 	}
-	
+
 	public Room getRoom() {
 		return room;
 	}
@@ -94,5 +94,5 @@ public class Reservation extends AuditModel{
 	public void setOccupiedSeats(Integer occupiedSeats) {
 		this.occupiedSeats = occupiedSeats;
 	}
-	
+
 }

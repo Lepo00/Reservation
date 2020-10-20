@@ -19,7 +19,6 @@ public class SeatServiceImpl implements SeatService {
 	@Autowired
 	private RoomRepository roomRepository;
 
-	
 	@Override
 	public Optional<Seat> get(Long id) throws Exception {
 		return seatRepository.findById(id);
@@ -27,8 +26,8 @@ public class SeatServiceImpl implements SeatService {
 
 	@Override
 	public boolean save(Seat s, Long idRoom) throws Exception {
-		Optional<Room> room= roomRepository.findById(idRoom);
-		if(room.isPresent() && s!=null && room.get().getSeats().size()<room.get().getNumberSeats()) {
+		Optional<Room> room = roomRepository.findById(idRoom);
+		if (room.isPresent() && s != null && room.get().getSeats().size() < room.get().getNumberSeats()) {
 			room.get().getSeats().add(s);
 			seatRepository.save(s);
 			return true;
@@ -42,16 +41,16 @@ public class SeatServiceImpl implements SeatService {
 	}
 
 	@Override
-	public Seat update(Long id, Boolean taken,String equipment, Integer number) throws Exception {
-		Seat seat=null;
-		Optional<Seat> s=this.get(id);
-		if(s.isPresent() && number!=null || equipment!=null || taken!=null){
-			seat= s.get();
-			if(equipment != null)
+	public Seat update(Long id, Boolean taken, String equipment, Integer number) throws Exception {
+		Seat seat = null;
+		Optional<Seat> s = this.get(id);
+		if (s.isPresent() && number != null || equipment != null || taken != null) {
+			seat = s.get();
+			if (equipment != null)
 				seat.setEquipment(equipment);
-			if(number != null)
+			if (number != null)
 				seat.setNumber(number);
-			if(taken!=null)
+			if (taken != null)
 				seat.setTaken(taken);
 		}
 		return seatRepository.save(seat);

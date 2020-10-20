@@ -23,7 +23,7 @@ import it.anoki.spring.repository.UserRepository;
 public class CustomUserDetailService implements UserDetailsService, AuthenticationManager {
 
 	@Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	@Autowired
 	private UserRepository userRepository;
 
@@ -31,23 +31,24 @@ public class CustomUserDetailService implements UserDetailsService, Authenticati
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User user = userRepository.findByName(username);
 		List<GrantedAuthority> grantedAuths = new ArrayList<>();
-	    grantedAuths.add(new SimpleGrantedAuthority("ROLE_USER"));
-        return new org.springframework.security.core.userdetails.User(user.getName(), bCryptPasswordEncoder.encode(user.getPassword()),grantedAuths);   
+		grantedAuths.add(new SimpleGrantedAuthority("ROLE_USER"));
+		return new org.springframework.security.core.userdetails.User(user.getName(),
+				bCryptPasswordEncoder.encode(user.getPassword()), grantedAuths);
 	}
 
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		String username = authentication.getPrincipal() + "";
-	    String password = authentication.getCredentials() + "";
+		String password = authentication.getCredentials() + "";
 
-	    User user = userRepository.findByName(username);
-	    if (user == null) {
-	        throw new BadCredentialsException("1000");
-	    }
-	    if (!(password.equals(user.getPassword()))) {
-	        throw new BadCredentialsException("1000");
-	    }
-        return authentication;
+		User user = userRepository.findByName(username);
+		if (user == null) {
+			throw new BadCredentialsException("1000");
+		}
+		if (!(password.equals(user.getPassword()))) {
+			throw new BadCredentialsException("1000");
+		}
+		return authentication;
 	}
-		
+
 }

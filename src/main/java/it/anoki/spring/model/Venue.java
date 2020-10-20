@@ -12,20 +12,20 @@ import javax.persistence.Table;
 @SuppressWarnings("serial")
 @Entity
 @Table
-public class Venue extends AuditModel{
-	
+public class Venue extends AuditModel {
+
 	@Column
 	private String address;
-	
+
 	@Column(name = "number_rooms")
 	private Long numberRooms;
-	
-	@Column(name="name")
+
+	@Column(name = "name")
 	private String name;
-	
+
 	@ManyToOne
 	private Company company;
-	
+
 	@OneToMany
 	@JoinColumn(name = "venue_id")
 	private List<Room> rooms;
@@ -69,6 +69,5 @@ public class Venue extends AuditModel{
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	
+
 }

@@ -66,20 +66,20 @@ public class GroupServiceImpl implements GroupService {
 
 	@Override
 	public boolean reserve(Long idGroup, Long idRoom, Reservation reservation) throws Exception {
-		if(!groupRepository.existsById(idGroup))
+		if (!groupRepository.existsById(idGroup))
 			return false;
 		return reservationService.saveByGroup(reservation, idGroup, idRoom);
 	}
 
 	@Override
 	public boolean isInGroup(Long idGroup, User user) throws Exception {
-		return(groupRepository.existsById(idGroup) && groupRepository.getOne(idGroup).getUsers().contains(user));
+		return (groupRepository.existsById(idGroup) && groupRepository.getOne(idGroup).getUsers().contains(user));
 	}
 
 	@Override
 	public boolean isInGroup(String idGroup, User user) throws Exception {
-		Long id=Long.parseLong(idGroup);
-		return(groupRepository.existsById(id) && groupRepository.getOne(id).getUsers().contains(user));
+		Long id = Long.parseLong(idGroup);
+		return (groupRepository.existsById(id) && groupRepository.getOne(id).getUsers().contains(user));
 	}
-	
+
 }

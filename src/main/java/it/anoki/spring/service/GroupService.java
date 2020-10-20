@@ -19,9 +19,9 @@ public interface GroupService {
 	public boolean addUser(Long idGroup, Long idUser) throws Exception;
 
 	public boolean reserve(Long idGroup, Long idRoom, Reservation reservation) throws Exception;
-	
+
 	public boolean isInGroup(Long idGroup, User user) throws Exception;
-	
+
 	public boolean isInGroup(String idGroup, User user) throws Exception;
 
 }

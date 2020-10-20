@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public boolean reserve(Long idRoom, Reservation reservation) throws Exception {
-		User user=userRepository.findByName(jwtTokenUtil.getUsernameFromToken());
+		User user = userRepository.findByName(jwtTokenUtil.getUsernameFromToken());
 		return reservationService.saveByUser(reservation, user.getId(), idRoom);
 	}
 

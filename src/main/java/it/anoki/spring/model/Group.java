@@ -12,18 +12,17 @@ import javax.persistence.Table;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "group")
-public class Group extends AuditModel{
+public class Group extends AuditModel {
 	@Column(name = "name")
 	private String name;
 
 	@Column(name = "description")
 	private String description;
-	
+
 	@ManyToMany
-	@JoinTable(name="group_user", joinColumns = @JoinColumn(name="group_id"),
-	inverseJoinColumns=@JoinColumn(name="user_id"))
+	@JoinTable(name = "group_user", joinColumns = @JoinColumn(name = "group_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
 	private List<User> users;
-	
+
 	public String getName() {
 		return name;
 	}
@@ -47,6 +46,5 @@ public class Group extends AuditModel{
 	public void setUsers(List<User> users) {
 		this.users = users;
 	}
-
 
 }

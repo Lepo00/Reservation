@@ -69,11 +69,11 @@ public class RoomServiceImpl implements RoomService {
 
 	@Override
 	public boolean occupySeats(Long idRoom, Integer numberSeats) {
-		Room room=roomRepository.getOne(idRoom);
-		if(numberSeats>this.freeSeats(idRoom))
+		Room room = roomRepository.getOne(idRoom);
+		if (numberSeats > this.freeSeats(idRoom))
 			return false;
-		for(int i=0;i<numberSeats;i++) {
-			Seat s=this.instanceSeat(room.getSeats().size()+1);
+		for (int i = 0; i < numberSeats; i++) {
+			Seat s = this.instanceSeat(room.getSeats().size() + 1);
 			room.getSeats().add(s);
 			seatRepository.save(s);
 		}
@@ -82,22 +82,20 @@ public class RoomServiceImpl implements RoomService {
 
 	@Override
 	public Integer freeSeats(Long idRoom) {
-		int cont=0;
-		Room room=roomRepository.getOne(idRoom);
-		for(Seat s: room.getSeats())
-			if(s.isTaken())
+		int cont = 0;
+		Room room = roomRepository.getOne(idRoom);
+		for (Seat s : room.getSeats())
+			if (s.isTaken())
 				cont++;
-		return  room.getNumberSeats()-cont;
+		return room.getNumberSeats() - cont;
 	}
-	
+
 	public Seat instanceSeat(int i) {
-		Seat s=new Seat();
+		Seat s = new Seat();
 		s.setTaken(true);
 		s.setEquipment("default");
 		s.setNumber(i);
 		return s;
 	}
-	
-	
 
 }

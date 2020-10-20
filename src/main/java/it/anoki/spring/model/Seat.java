@@ -7,14 +7,14 @@ import javax.persistence.Table;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "seat")
-public class Seat extends AuditModel{
-	
+public class Seat extends AuditModel {
+
 	@Column(name = "taken")
 	Boolean taken;
-	
+
 	@Column(name = "equipment")
 	String equipment;
-	
+
 	@Column(name = "number")
 	Integer number;
 
@@ -41,5 +41,5 @@ public class Seat extends AuditModel{
 	public void setNumber(Integer number) {
 		this.number = number;
 	}
-	
+
 }

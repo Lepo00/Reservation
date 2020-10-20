@@ -87,7 +87,8 @@ public class GroupController {
 			@RequestBody Reservation reservation) {
 		try {
 			boolean save = this.groupService.reserve(idGroup, idRoom, reservation);
-			return save ? ResponseEntity.ok().body(reservation) : ResponseEntity.badRequest().body("Reservation Not Made!");
+			return save ? ResponseEntity.ok().body(reservation)
+					: ResponseEntity.badRequest().body("Reservation Not Made!");
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body("Reservation Not Made!");
 		}

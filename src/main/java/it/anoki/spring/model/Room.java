@@ -11,26 +11,26 @@ import javax.persistence.Table;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "room")
-public class Room extends AuditModel{
-	
+public class Room extends AuditModel {
+
 	@Column
 	private Long size;
-	
+
 	@Column(name = "distance_min")
 	private Long distanceMin;
-	
+
 	@Column(name = "emergency_exits")
 	private Long emergencyExits;
-	
+
 	@Column(name = "no_usable_locations")
 	private Long noUsableLocations;
-	
+
 	@Column
 	private String name;
-	
+
 	@Column(name = "number_seats")
 	private Integer numberSeats;
-	
+
 	@OneToMany
 	@JoinColumn(name = "room_id")
 	private List<Seat> seats;
@@ -90,6 +90,5 @@ public class Room extends AuditModel{
 	public void setSeats(List<Seat> seats) {
 		this.seats = seats;
 	}
-	
-	
+
 }

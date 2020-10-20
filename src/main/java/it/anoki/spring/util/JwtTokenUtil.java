@@ -20,11 +20,11 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
 public class JwtTokenUtil implements Serializable {
-	
+
 	private static final long serialVersionUID = -2550185165626007488L;
-	
+
 	public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
-	
+
 	@Value("${jwt.secret}")
 	private String secret;
 
@@ -39,20 +39,21 @@ public class JwtTokenUtil implements Serializable {
 		final String username = getUsernameFromToken(token);
 		return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
 	}
-	
-	//retrieve username from jwt token
+
+	// retrieve username from jwt token
 	public String getUsernameFromToken(String token) {
 		return getClaimFromToken(token, Claims::getSubject);
 	}
-	
-	public String getUsernameFromToken(HttpServletRequest  request) {
+
+	public String getUsernameFromToken(HttpServletRequest request) {
 		final String requestTokenHeader = request.getHeader("Authorization");
 		String jwtToken = requestTokenHeader.substring("Bearer ".length());
 		return getClaimFromToken(jwtToken, Claims::getSubject);
 	}
-	
+
 	public String getUsernameFromToken() {
-		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
+				.getRequest();
 		final String requestTokenHeader = request.getHeader("Authorization");
 		String jwtToken = requestTokenHeader.substring("Bearer ".length());
 		return getClaimFromToken(jwtToken, Claims::getSubject);
@@ -79,14 +80,10 @@ public class JwtTokenUtil implements Serializable {
 //3. According to JWS Compact Serialization(https://tools.ietf.org/html/draft-ietf-jose-json-web-signature-41#section-3.1)
 //   compaction of the JWT to a URL-safe string 
 	private String doGenerateToken(Map<String, Object> claims, String subject) {
-		
-		return Jwts.builder()
-				.setClaims(claims)
-				.setSubject(subject)
-				.setIssuedAt(new Date(System.currentTimeMillis()))
+
+		return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
 				.setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
-				.signWith(SignatureAlgorithm.HS512, secret)
-			.compact();
+				.signWith(SignatureAlgorithm.HS512, secret).compact();
 	}
 
 //check if the token has expired

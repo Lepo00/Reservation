@@ -23,11 +23,11 @@ import it.anoki.spring.service.UserService;
 @RestController
 @RequestMapping("/user")
 public class UserController {
-	
+
 	@Autowired
 	UserService userService;
-	
-	@ApiOperation(value = "", authorizations = { @Authorization(value="jwtToken") })
+
+	@ApiOperation(value = "", authorizations = { @Authorization(value = "jwtToken") })
 	@GetMapping("/detail/{id}")
 	public ResponseEntity<User> get(@PathVariable Long id) throws Exception {
 		Optional<User> c = userService.get(id);
@@ -37,8 +37,8 @@ public class UserController {
 			return ResponseEntity.notFound().build();
 		}
 	}
-	
-	@ApiOperation(value = "", authorizations = { @Authorization(value="jwtToken") })
+
+	@ApiOperation(value = "", authorizations = { @Authorization(value = "jwtToken") })
 	@PostMapping("/save")
 	public ResponseEntity<?> newUser(@RequestBody User u) throws Exception {
 		try {
@@ -47,23 +47,21 @@ public class UserController {
 			return ResponseEntity.badRequest().body("User Not Saved!");
 		}
 	}
-	
-	@ApiOperation(value = "", authorizations = { @Authorization(value="jwtToken") })
+
+	@ApiOperation(value = "", authorizations = { @Authorization(value = "jwtToken") })
 	@PutMapping(path = "/update/{id}")
-	public ResponseEntity<?> updateUser(@PathVariable Long id,
-			@RequestParam (required = false) String email,
-			@RequestParam (required = false) String address,
-			@RequestParam (required = false) String name) {
+	public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestParam(required = false) String email,
+			@RequestParam(required = false) String address, @RequestParam(required = false) String name) {
 		try {
-			return ResponseEntity.ok(userService.update(id, address, email,name));
+			return ResponseEntity.ok(userService.update(id, address, email, name));
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body("User Not Updated!");
 		}
 	}
-	
-	@ApiOperation(value = "", authorizations = { @Authorization(value="jwtToken") })
-	@DeleteMapping(path="delete/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable Long id){
+
+	@ApiOperation(value = "", authorizations = { @Authorization(value = "jwtToken") })
+	@DeleteMapping(path = "delete/{id}")
+	public ResponseEntity<String> deleteUser(@PathVariable Long id) {
 		try {
 			userService.delete(id);
 			return ResponseEntity.ok().body("User Deleted");
@@ -71,13 +69,14 @@ public class UserController {
 			return ResponseEntity.notFound().build();
 		}
 	}
-	
-	@ApiOperation(value = "", authorizations = { @Authorization(value="jwtToken") })
-	@PostMapping(path="/reserve/{idRoom}")
-	public ResponseEntity<?> reserve(@PathVariable Long idRoom, @RequestBody Reservation reservation){
+
+	@ApiOperation(value = "", authorizations = { @Authorization(value = "jwtToken") })
+	@PostMapping(path = "/reserve/{idRoom}")
+	public ResponseEntity<?> reserve(@PathVariable Long idRoom, @RequestBody Reservation reservation) {
 		try {
-			boolean save=this.userService.reserve(idRoom, reservation);
-			return save ? ResponseEntity.ok().body(reservation) : ResponseEntity.badRequest().body("Reservation Not Made!");
+			boolean save = this.userService.reserve(idRoom, reservation);
+			return save ? ResponseEntity.ok().body(reservation)
+					: ResponseEntity.badRequest().body("Reservation Not Made!");
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body("Reservation Not Made!");
 		}

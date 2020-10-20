@@ -19,14 +19,15 @@ import io.swagger.annotations.Authorization;
 import it.anoki.spring.model.Company;
 import it.anoki.spring.model.Reservation;
 import it.anoki.spring.service.CompanyService;
+
 @RestController
 @RequestMapping("/company")
 public class CompanyController {
-	
+
 	@Autowired
 	CompanyService companyService;
-	
-	@ApiOperation(value = "", authorizations = { @Authorization(value="jwtToken") })
+
+	@ApiOperation(value = "", authorizations = { @Authorization(value = "jwtToken") })
 	@GetMapping("/detail/{id}")
 	public ResponseEntity<Company> get(@PathVariable Long id) throws Exception {
 		Optional<Company> c = companyService.get(id);
@@ -36,35 +37,31 @@ public class CompanyController {
 			return ResponseEntity.notFound().build();
 		}
 	}
-	
-	@ApiOperation(value = "", authorizations = { @Authorization(value="jwtToken") })
+
+	@ApiOperation(value = "", authorizations = { @Authorization(value = "jwtToken") })
 	@PostMapping("/save/{idUser}")
-	public ResponseEntity<?> newCompany(
-			@PathVariable Long idUser,
-			@RequestBody Company c
-			) throws Exception {
+	public ResponseEntity<?> newCompany(@PathVariable Long idUser, @RequestBody Company c) throws Exception {
 		try {
-			return ResponseEntity.ok(companyService.save(c,idUser));
+			return ResponseEntity.ok(companyService.save(c, idUser));
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body("Company Not Saved!");
 		}
 	}
-	
-	@ApiOperation(value = "", authorizations = { @Authorization(value="jwtToken") })
+
+	@ApiOperation(value = "", authorizations = { @Authorization(value = "jwtToken") })
 	@PutMapping(path = "/update/{id}")
-	public ResponseEntity<?> updateCompany(@PathVariable Long id,
-			@RequestParam (required = false) String desc,
-			@RequestParam (required = false) String name) {
+	public ResponseEntity<?> updateCompany(@PathVariable Long id, @RequestParam(required = false) String desc,
+			@RequestParam(required = false) String name) {
 		try {
 			return ResponseEntity.ok(companyService.update(id, name, desc));
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body("Company Not Updated!");
 		}
 	}
-	
-	@ApiOperation(value = "", authorizations = { @Authorization(value="jwtToken") })
-	@DeleteMapping(path="delete/{id}")
-    public ResponseEntity<String> deleteCompany(@PathVariable Long id){
+
+	@ApiOperation(value = "", authorizations = { @Authorization(value = "jwtToken") })
+	@DeleteMapping(path = "delete/{id}")
+	public ResponseEntity<String> deleteCompany(@PathVariable Long id) {
 		try {
 			companyService.delete(id);
 			return ResponseEntity.ok().body("Company Deleted");
@@ -72,14 +69,15 @@ public class CompanyController {
 			return ResponseEntity.notFound().build();
 		}
 	}
-	
+
 	@ApiOperation(value = "", authorizations = { @Authorization(value = "jwtToken") })
 	@PostMapping(path = "/{idCompany}/reserve/{idRoom}")
 	public ResponseEntity<?> reserve(@PathVariable Long idCompany, @PathVariable Long idRoom,
 			@RequestBody Reservation reservation) {
 		try {
 			boolean save = this.companyService.reserve(idCompany, idRoom, reservation);
-			return save ? ResponseEntity.ok().body(reservation) : ResponseEntity.badRequest().body("Reservation Not Made!");
+			return save ? ResponseEntity.ok().body(reservation)
+					: ResponseEntity.badRequest().body("Reservation Not Made!");
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body("Reservation Not Made!");
 		}
