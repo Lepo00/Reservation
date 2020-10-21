@@ -14,6 +14,9 @@ public class Company extends AuditModel {
 
 	@Column(name = "description")
 	private String description;
+	
+	@Column(name = "address")
+	private String address;
 
 	@ManyToOne
 	private User user;
