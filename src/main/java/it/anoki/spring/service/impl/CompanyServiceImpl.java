@@ -1,9 +1,9 @@
 package it.anoki.spring.service.impl;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 
 import it.anoki.spring.model.Company;
 import it.anoki.spring.model.Reservation;
@@ -12,6 +12,7 @@ import it.anoki.spring.repository.CompanyRepository;
 import it.anoki.spring.repository.UserRepository;
 import it.anoki.spring.service.CompanyService;
 import it.anoki.spring.service.ReservationService;
+import javassist.NotFoundException;
 
 @Service
 public class CompanyServiceImpl implements CompanyService {
@@ -24,37 +25,37 @@ public class CompanyServiceImpl implements CompanyService {
 	private UserRepository userRepository;
 
 	@Override
-	public Optional<Company> get(Long id) throws Exception {
-		return companyRepository.findById(id);
+	public Company get(Long id) throws Exception {
+		if (!companyRepository.existsById(id))
+			throw new NotFoundException("Company not found");
+		return companyRepository.getOne(id);
 	}
 
 	@Override
 	public Company save(Company c, Long idUser) throws Exception {
-		Optional<User> u = userRepository.findById(idUser);
-		if (u.isPresent())
-			c.setUser(u.get());
-		else
-			c = null;
+		if (!userRepository.existsById(idUser))
+			throw new NotFoundException("Company not found");
+		c.setUser(userRepository.getOne(idUser));
 		return companyRepository.save(c);
 	}
 
 	@Override
 	public void delete(Long id) throws Exception {
+		if (!companyRepository.existsById(id))
+			throw new NotFoundException("Company not found");
 		companyRepository.deleteById(id);
 	}
 
 	@Override
 	public Company update(Long id, String name, String desc) throws Exception {
-		Optional<Company> company = this.get(id);
-		Company c = null;
-		if (company.isPresent() && desc != null || name != null) {
-			c = company.get();
-			if (desc != null)
-				c.setDescription(desc);
-			if (name != null)
-				c.setName(name);
-		}
-		return companyRepository.save(c);
+		Company company = this.get(id);
+		if (desc == null && name == null)
+			throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
+		if (desc != null)
+			company.setDescription(desc);
+		if (name != null)
+			company.setName(name);
+		return companyRepository.save(company);
 	}
 
 	@Override
