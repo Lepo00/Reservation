@@ -24,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @SuppressWarnings("serial")
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-@JsonIgnoreProperties(value = { "createdAt", "updatedAt" }, allowGetters = true)
+@JsonIgnoreProperties({ "createdAt", "updatedAt", "hibernateLazyInitializer", "handler"})
 public abstract class AuditModel implements Serializable {
 
 	@JsonIgnore
