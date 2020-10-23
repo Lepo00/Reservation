@@ -1,7 +1,5 @@
 package it.anoki.spring.controller;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,44 +28,30 @@ public class UserController {
 	@ApiOperation(value = "", authorizations = { @Authorization(value = "jwtToken") })
 	@GetMapping("/detail/{id}")
 	public ResponseEntity<User> get(@PathVariable Long id) throws Exception {
-		Optional<User> c = userService.get(id);
-		if (c.isPresent()) {
-			return ResponseEntity.ok(c.get());
-		} else {
-			return ResponseEntity.notFound().build();
-		}
+		User c = userService.get(id);
+		return ResponseEntity.ok(c);
 	}
 
 	@ApiOperation(value = "", authorizations = { @Authorization(value = "jwtToken") })
 	@PostMapping("/save")
 	public ResponseEntity<?> newUser(@RequestBody User u) throws Exception {
-		try {
-			return ResponseEntity.ok(userService.save(u));
-		} catch (Exception e) {
-			return ResponseEntity.badRequest().body("User Not Saved!");
-		}
+		return ResponseEntity.ok(userService.save(u));
 	}
 
 	@ApiOperation(value = "", authorizations = { @Authorization(value = "jwtToken") })
 	@PutMapping(path = "/update/{id}")
 	public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestParam(required = false) String email,
-			@RequestParam(required = false) String address, @RequestParam(required = false) String name) {
-		try {
-			return ResponseEntity.ok(userService.update(id, address, email, name));
-		} catch (Exception e) {
-			return ResponseEntity.badRequest().body("User Not Updated!");
-		}
+			@RequestParam(required = false) String address, @RequestParam(required = false) String name)
+			throws Exception {
+		User user = userService.update(id, address, email, name);
+		return ResponseEntity.ok(user);
 	}
 
 	@ApiOperation(value = "", authorizations = { @Authorization(value = "jwtToken") })
 	@DeleteMapping(path = "delete/{id}")
-	public ResponseEntity<String> deleteUser(@PathVariable Long id) {
-		try {
-			userService.delete(id);
-			return ResponseEntity.ok().body("User Deleted");
-		} catch (Exception e) {
-			return ResponseEntity.notFound().build();
-		}
+	public ResponseEntity<String> deleteUser(@PathVariable Long id) throws Exception {
+		userService.delete(id);
+		return ResponseEntity.ok().body("User Deleted");
 	}
 
 	@ApiOperation(value = "", authorizations = { @Authorization(value = "jwtToken") })

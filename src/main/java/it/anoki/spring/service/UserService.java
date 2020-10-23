@@ -1,13 +1,11 @@
 package it.anoki.spring.service;
 
-import java.util.Optional;
-
 import it.anoki.spring.model.Reservation;
 import it.anoki.spring.model.User;
 
 public interface UserService {
 
-	public Optional<User> get(Long id) throws Exception;
+	public User get(Long id) throws Exception;
 
 	public User save(User c) throws Exception;
 
