@@ -16,7 +16,6 @@ import javassist.NotFoundException;
 
 @Service
 public class CompanyServiceImpl implements CompanyService {
-
 	@Autowired
 	private ReservationService reservationService;
 	@Autowired
