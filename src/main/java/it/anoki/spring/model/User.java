@@ -29,6 +29,9 @@ public class User extends AuditModel {
 	@NotNull
 	private String password;
 
+	@Column(nullable = true, length = 64)
+	private String photos;
+
 	@OneToMany(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id")
 	private List<Reservation> reservations;
@@ -71,6 +74,14 @@ public class User extends AuditModel {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getPhotos() {
+		return photos;
+	}
+
+	public void setPhotos(String photos) {
+		this.photos = photos;
 	}
 
 }

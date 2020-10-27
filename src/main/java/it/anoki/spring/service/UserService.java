@@ -1,5 +1,7 @@
 package it.anoki.spring.service;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import it.anoki.spring.model.Reservation;
 import it.anoki.spring.model.User;
 
@@ -14,5 +16,7 @@ public interface UserService {
 	public User update(Long id, String address, String email, String name) throws Exception;
 
 	public boolean reserve(Long idRoom, Reservation reservation) throws Exception;
+	
+	public User uploadPhoto(Long id, MultipartFile file) throws Exception;
 
 }

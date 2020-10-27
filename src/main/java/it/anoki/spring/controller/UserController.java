@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
@@ -65,4 +66,12 @@ public class UserController {
 			return ResponseEntity.badRequest().body("Reservation Not Made!");
 		}
 	}
+
+	@ApiOperation(value = "", authorizations = { @Authorization(value = "jwtToken") })
+	@PostMapping(path = "/upload/{id}")
+	public ResponseEntity<User> uploadPhoto(@PathVariable Long id, @RequestParam("image") MultipartFile file)
+			throws Exception {
+		return ResponseEntity.ok(userService.uploadPhoto(id, file));
+	}
+
 }
