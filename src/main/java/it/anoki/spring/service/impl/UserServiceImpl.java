@@ -70,9 +70,9 @@ public class UserServiceImpl implements UserService {
 		User user = userRepository.getOne(id);
 		String basePath = System.getProperty("java.io.tmpdir");
 		String originalFilename = file.getOriginalFilename();
-		String destPath = basePath + File.separator + originalFilename;
-		user.setPhotos(destPath);
+		String destPath = basePath + originalFilename;
+		user.setPhoto(destPath);
+		file.transferTo(new File(destPath));
 		return userRepository.save(user);
 	}
-
 }
