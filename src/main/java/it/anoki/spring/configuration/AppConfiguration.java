@@ -2,6 +2,13 @@ package it.anoki.spring.configuration;
 
 import java.util.Arrays;
 
+import org.springframework.batch.core.Job;
+import org.springframework.batch.core.JobExecutionListener;
+import org.springframework.batch.core.Step;
+import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
+import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
+import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +22,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import it.anoki.spring.csv.JobCompletionListener;
+import it.anoki.spring.csv.Processor;
+import it.anoki.spring.csv.Reader;
+import it.anoki.spring.csv.Writer;
 import it.anoki.spring.filter.JwtRequestFilter;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
@@ -28,10 +39,14 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableJpaAuditing
 @EnableWebSecurity
+@EnableBatchProcessing
 @EnableSwagger2
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class AppConfiguration extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
-
+	@Autowired
+	public JobBuilderFactory jobBuilderFactory;
+	@Autowired
+	public StepBuilderFactory stepBuilderFactory;
 	@Autowired
 	private JwtRequestFilter jwtRequestFilter;
 
@@ -44,7 +59,7 @@ public class AppConfiguration extends WebSecurityConfigurerAdapter implements We
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable().authorizeRequests()
 				.antMatchers("/auth/token", "/swagger.json", "/webjars/**", "/swagger-ui.html", "/swagger-resources/**",
-						"/v2/api-docs", "/login", "/user/upload")
+						"/v2/api-docs", "/login", "/user/upload","/invokejob")
 				.permitAll().anyRequest().authenticated().and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
@@ -66,5 +81,26 @@ public class AppConfiguration extends WebSecurityConfigurerAdapter implements We
 	private ApiKey apiKey() {
 		return new ApiKey("jwtToken", "Authorization", "header");
 	}
+	
+	@Bean
+	public Job processJob() {
+		return jobBuilderFactory.get("processJob")
+				.incrementer(new RunIdIncrementer()).listener(listener())
+				.flow(orderStep1()).end().build();
+	}
+
+	@Bean
+	public Step orderStep1() {
+		return stepBuilderFactory.get("orderStep1").<String, String> chunk(1)
+				.reader(new Reader())
+				.processor(new Processor())
+				.writer(new Writer()).build();
+	}
+
+	@Bean
+	public JobExecutionListener listener() {
+		return new JobCompletionListener();
+	}
+
 
 }
