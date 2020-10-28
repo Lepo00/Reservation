@@ -46,14 +46,14 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class AppConfiguration extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
 	@Autowired
 	UserService userService;
-	
+
 	@Autowired
 	public JobBuilderFactory jobBuilderFactory;
 	@Autowired
 	public StepBuilderFactory stepBuilderFactory;
 	@Autowired
 	private JwtRequestFilter jwtRequestFilter;
-	
+
 	@Bean
 	public BCryptPasswordEncoder bCryptPasswordEncoder() {
 		return new BCryptPasswordEncoder();
@@ -85,18 +85,17 @@ public class AppConfiguration extends WebSecurityConfigurerAdapter implements We
 	private ApiKey apiKey() {
 		return new ApiKey("jwtToken", "Authorization", "header");
 	}
-	
+
 	@Bean
-	  public Job job() {
-	    return jobBuilderFactory.get("job").incrementer(new RunIdIncrementer()).listener(new JobCompletionListener())
-	        .flow(step1()).end().build();
-	  }
-	 
-	  @Bean
-	  public Step step1() {
-	    return stepBuilderFactory.get("step1").<User, User>chunk(2)
-	        .reader(Reader.reader("inputData.csv"))
-	        .processor(new Processor()).writer(new Writer(this.userService)).build();
-	  }
+	public Job job() {
+		return jobBuilderFactory.get("job").incrementer(new RunIdIncrementer()).listener(new JobCompletionListener())
+				.flow(step1()).end().build();
+	}
+
+	@Bean
+	public Step step1() {
+		return stepBuilderFactory.get("step1").<User, User>chunk(2).reader(Reader.reader("inputData.csv"))
+				.processor(new Processor()).writer(new Writer(this.userService)).build();
+	}
 
 }

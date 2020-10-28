@@ -19,14 +19,14 @@ public class JobInvokerController {
 
 	@RequestMapping("/invokejob")
 	public String handle() throws Exception {
-	    try {
-	      JobParameters jobParameters = new JobParametersBuilder().addLong("time", System.currentTimeMillis())
-	          .toJobParameters();
-	      jobLauncher.run(job, jobParameters);
-	    } catch (Exception e) {
-	      System.out.println(e.getMessage());
-	    }
-	    return "Done! Check Console Window for more details";
-	  }
+		try {
+			JobParameters jobParameters = new JobParametersBuilder().addLong("time", System.currentTimeMillis())
+					.toJobParameters();
+			jobLauncher.run(job, jobParameters);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return "Done! Check Console Window for more details";
+	}
 
 }
