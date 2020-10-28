@@ -9,7 +9,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import it.anoki.spring.model.User;
+import it.anoki.spring.service.UserService;
 import it.anoki.spring.util.JwtTokenUtil;
 
 @Controller
@@ -17,6 +20,8 @@ public class ThymeleafController {
 
 	@Autowired
 	private AuthenticationManager authenticationManager;
+	@Autowired
+	private UserService userService;
 
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil;
@@ -36,5 +41,20 @@ public class ThymeleafController {
 			return "failed";
 		}
 	}
-
+	
+	@GetMapping("/user/upload")
+	public String getUpload(Model model) {
+		return "upload";
+	}
+	
+	@PostMapping("/user/upload")
+	public String postUpload(Model model, @RequestParam Long id, @RequestParam MultipartFile image) {
+		try {
+			User user= userService.uploadPhoto(id, image);
+			model.addAttribute("user",user);
+			return "viewPhoto";
+		} catch (Exception e) {
+			return "failedUpload";
+		}
+	}
 }

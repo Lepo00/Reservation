@@ -1,0 +1,28 @@
+<html>
+<head>
+<title>Upload Photo</title>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+	crossorigin="anonymous">
+</head>
+<body>
+	<form method="POST" enctype="multipart/form-data">
+		<div class="container m-5">
+			<div class="input-group input-group-lg">
+				<div class="input-group-prepend">
+					<span class="input-group-text" id="inputGroup-sizing-lg">Id
+						User</span>
+				</div>
+				<input type="number" class="form-control" aria-label="Large"
+					aria-describedby="inputGroup-sizing-sm" name="id">
+			</div>
+			<div class="form-group mt-2">
+				<input type="file" class="form-control-file form-control-lg p-0"
+					id="exampleFormControlFile1" name="image" accept="image/png, image/jpeg, image/jpg, image/png"/>
+			</div>
+			<button type="submit" class="btn btn-primary btn-lg">Invio</button>
+		</div>
+	</form>
+</body>
+</html>
