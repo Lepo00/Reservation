@@ -1,6 +1,7 @@
 package it.anoki.spring.service.impl;
 
 import java.io.File;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,7 @@ public class UserServiceImpl implements UserService {
 	public User save(User c) throws Exception {
 		if (c == null)
 			throw new NotFoundException("User not saved!!!");
+		System.out.println(c.toString());
 		return userRepository.save(c);
 	}
 
@@ -74,5 +76,10 @@ public class UserServiceImpl implements UserService {
 		user.setPhoto(destPath);
 		file.transferTo(new File(destPath));
 		return userRepository.save(user);
+	}
+
+	@Override
+	public void saveAll(List<? extends User> users) throws Exception {
+		userRepository.saveAll(users);
 	}
 }

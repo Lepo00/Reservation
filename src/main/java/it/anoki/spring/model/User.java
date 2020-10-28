@@ -84,4 +84,10 @@ public class User extends AuditModel {
 		this.photo = photo;
 	}
 
+	@Override
+	public String toString() {
+		return "User [id="+ getId()+", name=" + name + ", email=" + email + ", address=" + address + ", password=" + password
+				+ ", photo=" + photo + ", reservations=" + reservations + "]";
+	}
+
 }

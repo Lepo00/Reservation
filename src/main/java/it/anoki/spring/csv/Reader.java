@@ -1,24 +1,32 @@
 package it.anoki.spring.csv;
 
-import org.springframework.batch.item.ItemReader;
+import org.springframework.batch.item.file.FlatFileItemReader;
+import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
+import org.springframework.batch.item.file.mapping.DefaultLineMapper;
+import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
+import org.springframework.core.io.ClassPathResource;
 
-public class Reader implements ItemReader<String> {
+import it.anoki.spring.model.User;
 
-	private String[] messages = { "javainuse.com",
-			"Welcome to Spring Batch Example",
-			"We use H2 Database for this example" };
+public class Reader {
+	public static FlatFileItemReader<User> reader(String path) {
+		FlatFileItemReader<User> reader = new FlatFileItemReader<User>();
 
-	private int count = 0;
-
-	@Override
-	public String read() throws Exception{
-
-		if (count < messages.length) {
-			return messages[count++];
-		} else {
-			count = 0;
-		}
-		return null;
+		reader.setResource(new ClassPathResource(path));
+		reader.setLineMapper(new DefaultLineMapper<User>() {
+			{
+				setLineTokenizer(new DelimitedLineTokenizer() {
+					{
+						setNames(new String[] { "name", "password", "address" });
+					}
+				});
+				setFieldSetMapper(new BeanWrapperFieldSetMapper<User>() {
+					{
+						setTargetType(User.class);
+					}
+				});
+			}
+		});
+		return reader;
 	}
-
 }

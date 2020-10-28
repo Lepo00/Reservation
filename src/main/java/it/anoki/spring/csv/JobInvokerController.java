@@ -15,15 +15,18 @@ public class JobInvokerController {
 	JobLauncher jobLauncher;
 
 	@Autowired
-	Job processJob;
+	Job job;
 
 	@RequestMapping("/invokejob")
 	public String handle() throws Exception {
+	    try {
+	      JobParameters jobParameters = new JobParametersBuilder().addLong("time", System.currentTimeMillis())
+	          .toJobParameters();
+	      jobLauncher.run(job, jobParameters);
+	    } catch (Exception e) {
+	      System.out.println(e.getMessage());
+	    }
+	    return "Done! Check Console Window for more details";
+	  }
 
-		JobParameters jobParameters = new JobParametersBuilder().addLong("time", System.currentTimeMillis())
-				.toJobParameters();
-		jobLauncher.run(processJob, jobParameters);
-
-		return "Batch job has been invoked";
-	}
 }

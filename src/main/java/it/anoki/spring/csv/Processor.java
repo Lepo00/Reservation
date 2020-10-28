@@ -2,11 +2,15 @@ package it.anoki.spring.csv;
 
 import org.springframework.batch.item.ItemProcessor;
 
-public class Processor implements ItemProcessor<String, String> {
+import it.anoki.spring.model.User;
+
+public class Processor implements ItemProcessor<User, User> {
 
 	@Override
-	public String process(String data) throws Exception {
-		return data.toUpperCase();
+	public User process(User item) throws Exception {
+		System.out.print("PROCESSOR:\t");
+		System.out.println(item.toString());
+		return item;
 	}
 
 }
