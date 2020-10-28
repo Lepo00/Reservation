@@ -27,7 +27,6 @@ import it.anoki.spring.csv.Reader;
 import it.anoki.spring.csv.Writer;
 import it.anoki.spring.filter.JwtRequestFilter;
 import it.anoki.spring.model.User;
-import it.anoki.spring.service.UserService;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -44,8 +43,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class AppConfiguration extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
-	@Autowired
-	UserService userService;
 
 	@Autowired
 	public JobBuilderFactory jobBuilderFactory;
@@ -53,6 +50,8 @@ public class AppConfiguration extends WebSecurityConfigurerAdapter implements We
 	public StepBuilderFactory stepBuilderFactory;
 	@Autowired
 	private JwtRequestFilter jwtRequestFilter;
+	@Autowired
+	private Writer userWriter;
 
 	@Bean
 	public BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -92,10 +91,11 @@ public class AppConfiguration extends WebSecurityConfigurerAdapter implements We
 				.flow(step1()).end().build();
 	}
 
-	@Bean
-	public Step step1() {
-		return stepBuilderFactory.get("step1").<User, User>chunk(2).reader(Reader.reader("inputData.csv"))
-				.processor(new Processor()).writer(new Writer(this.userService)).build();
-	}
+	 @Bean
+	  public Step step1() {
+	    return stepBuilderFactory.get("step1").<User, User>chunk(2)
+	        .reader(Reader.reader("inputData.csv"))
+	        .processor(new Processor()).writer(userWriter).build();
+	  }
 
 }

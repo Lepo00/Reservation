@@ -36,7 +36,6 @@ public class UserServiceImpl implements UserService {
 	public User save(User c) throws Exception {
 		if (c == null)
 			throw new NotFoundException("User not saved!!!");
-		System.out.println(c.toString());
 		return userRepository.save(c);
 	}
 
