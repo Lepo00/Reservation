@@ -22,5 +22,7 @@ public interface UserService {
 	public User uploadPhoto(Long id, MultipartFile file) throws Exception;
 	
 	public void saveAll(List<? extends User> users) throws Exception;
+	
+	public List<User> getAll() throws Exception;
 
 }

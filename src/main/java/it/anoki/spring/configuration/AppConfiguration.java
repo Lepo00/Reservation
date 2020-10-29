@@ -62,7 +62,7 @@ public class AppConfiguration extends WebSecurityConfigurerAdapter implements We
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable().authorizeRequests()
 				.antMatchers("/auth/token", "/swagger.json", "/webjars/**", "/swagger-ui.html", "/swagger-resources/**",
-						"/v2/api-docs", "/login", "/user/upload", "/invokejob")
+						"/v2/api-docs", "/login", "/user/upload", "/import", "/export")
 				.permitAll().anyRequest().authenticated().and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 

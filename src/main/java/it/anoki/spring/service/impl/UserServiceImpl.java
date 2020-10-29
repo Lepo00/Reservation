@@ -14,6 +14,7 @@ import it.anoki.spring.service.ReservationService;
 import it.anoki.spring.service.UserService;
 import it.anoki.spring.util.JwtTokenUtil;
 import javassist.NotFoundException;
+import javassist.tools.web.BadHttpRequest;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -79,6 +80,15 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void saveAll(List<? extends User> users) throws Exception {
+		if(users==null)
+			throw new BadHttpRequest();
 		userRepository.saveAll(users);
+	}
+
+	@Override
+	public List<User> getAll() throws Exception {
+		if(userRepository.count()==0)
+			throw new NotFoundException("Repository empty");
+		return userRepository.findAll();
 	}
 }
