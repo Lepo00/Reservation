@@ -24,5 +24,5 @@ public interface UserService {
 	public void saveAll(List<? extends User> users) throws Exception;
 	
 	public List<User> getAll() throws Exception;
-
+	
 }

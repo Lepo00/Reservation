@@ -86,7 +86,7 @@ public class User extends AuditModel {
 
 	@Override
 	public String toString() {
-		return "User [id="+ getId()+", name=" + name + ", email=" + email + ", address=" + address + ", password=" + password
+		return "User [name=" + name + ", email=" + email + ", address=" + address + ", password=" + password
 				+ ", photo=" + photo + ", reservations=" + reservations + "]";
 	}
 
