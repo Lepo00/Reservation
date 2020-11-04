@@ -36,7 +36,7 @@ public class ThymeleafController {
 	public String postLogin(Model model, @RequestParam String inputName, @RequestParam String inputPassword) {
 		try {
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(inputName, inputPassword));
-			model.addAttribute("token",jwtTokenUtil.generateToken(inputName+ ""));
+			model.addAttribute("token",jwtTokenUtil.generateToken(inputName));
 			return "success";
 		}catch (BadCredentialsException e) {
 			model.addAttribute("name","Login  failed");
