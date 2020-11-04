@@ -25,4 +25,6 @@ public interface UserService {
 	
 	public List<User> getAll() throws Exception;
 	
+	public User getFromName(String name) throws Exception;
+	
 }

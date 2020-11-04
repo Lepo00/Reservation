@@ -93,4 +93,12 @@ public class UserServiceImpl implements UserService {
 			throw new NotFoundException("Repository empty");
 		return userRepository.findAll();
 	}
+
+	@Override
+	public User getFromName(String name) throws Exception {
+		User user= userRepository.findByName(name);
+		if(user==null)
+			throw new BadHttpRequest();
+		return user;
+	}
 }
