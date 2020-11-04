@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import it.anoki.spring.model.User;
+import it.anoki.spring.service.EmailService;
 import it.anoki.spring.service.UserService;
 import it.anoki.spring.util.JwtTokenUtil;
 
@@ -23,9 +24,10 @@ public class ThymeleafController {
 	private AuthenticationManager authenticationManager;
 	@Autowired
 	private UserService userService;
-
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil;
+	@Autowired
+	private EmailService emailService;
 
 	@GetMapping("/login")
 	public String getLogin(Model model) {
@@ -70,6 +72,7 @@ public class ThymeleafController {
 		try {
 			userService.save(user);
 			model.addAttribute("user", user);
+			emailService.sendSimpleMessage(user.getName(), "First Token for API", jwtTokenUtil.generateToken(user.getName()));
 			return "userRegistered";
 		}catch(Exception e) {
 			model.addAttribute("name","Register  failed");
