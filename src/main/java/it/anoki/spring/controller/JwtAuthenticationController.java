@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.anoki.spring.model.JwtAuthenticationReq;
+import it.anoki.spring.model.User;
+import it.anoki.spring.service.EmailService;
+import it.anoki.spring.service.UserService;
 import it.anoki.spring.util.JwtTokenUtil;
 
 @RestController
@@ -24,6 +27,12 @@ public class JwtAuthenticationController {
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil;
 
+	@Autowired
+	EmailService emailService;
+
+	@Autowired
+	UserService userService;
+
 	@PostMapping("/token")
 	public ResponseEntity<String> createAuthenticationToken(@RequestBody JwtAuthenticationReq authenticationRequest)
 			throws Exception {
@@ -32,6 +41,9 @@ public class JwtAuthenticationController {
 					authenticationRequest.getPassword());
 
 			final String token = jwtTokenUtil.generateToken(user.getPrincipal() + "");
+
+			User u = userService.getFromName(user.getPrincipal() + "");
+			emailService.sendSimpleMessage(u.getEmail(), "Token for API", token);
 
 			return ResponseEntity.ok(token);
 		} catch (BadCredentialsException e) {
